@@ -457,6 +457,29 @@ main{
 main .glass:last-of-type{
   margin-bottom: calc(var(--footerGap));
 }
+
+
+/* ===============================
+   Equal spacing: (header -> content) == (content -> footer)
+   =============================== */
+
+/* نفس مسافة py-4 (24px) */
+:root{
+  --mainPadY: 24px;
+}
+
+/* نثبت مسافة البداية تحت الهيدر */
+main{
+  padding-top: var(--mainPadY) !important;
+
+  /* نضيف ارتفاع الفوتر + نفس مسافة البداية حتى تصير النهاية فوق الفوتر بنفس المسافة */
+  padding-bottom: calc(var(--footerH) + var(--mainPadY) + env(safe-area-inset-bottom)) !important;
+}
+
+/* احتياط: آخر صندوق (glass) ياخذ نفس المسافة حتى لو صار اختلاف بالمتصفح */
+main .glass:last-of-type{
+  margin-bottom: var(--mainPadY) !important;
+}
     
     
     
