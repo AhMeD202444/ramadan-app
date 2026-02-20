@@ -5,11 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>امساكية رمضان</title>
 
-  <!-- Bootstrap RTL -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-  <!-- Icons -->
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
-  <!-- Cairo Font -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
@@ -18,7 +15,6 @@
       --bg1:#0B1020;
 
       --stroke: rgba(118,153,255,.16);
-
       --text:#EAF0FF;
       --muted:#AFC0FF;
 
@@ -27,31 +23,44 @@
 
       --footerH: 56px;
       --headerBg: rgba(6,8,20,.55);
-      --mainPadY: 24px; /* نفس py-4 تقريباً */
+      --mainPadY: 24px;
+
+      --a1: rgba(124,92,255,.92);
+      --a2: rgba(46,229,157,.92);
+      --a3: rgba(255,193,77,.92);
+      --a4: rgba(255,92,122,.88);
     }
 
     *{ font-family:"Cairo", system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+    html{ scroll-behavior:smooth; }
+
     body{
       color: var(--text);
       min-height: 100vh;
       background:
-        radial-gradient(1200px 800px at 20% -10%, rgba(124,92,255,.40), transparent 55%),
-        radial-gradient(900px 700px at 100% 10%, rgba(46,229,157,.22), transparent 55%),
-        radial-gradient(800px 700px at 10% 110%, rgba(255,92,122,.18), transparent 55%),
+        radial-gradient(1200px 800px at 20% -10%, rgba(124,92,255,.38), transparent 55%),
+        radial-gradient(900px 700px at 100% 10%, rgba(46,229,157,.18), transparent 55%),
+        radial-gradient(800px 700px at 10% 110%, rgba(255,193,77,.10), transparent 55%),
         linear-gradient(180deg, var(--bg0), var(--bg1));
       overflow-x:hidden;
     }
 
     .app{ max-width: 980px; }
 
+    /* ===== Header ===== */
     .topbar{
       position: sticky; top:0; z-index: 50;
       backdrop-filter: blur(14px);
       background: var(--headerBg);
       border-bottom: 1px solid rgba(118,153,255,.10);
       padding: 10px 0;
+      transition: padding .25s ease, background .25s ease, border-color .25s ease;
     }
-
+    .topbar.scrolled{
+      padding: 6px 0;
+      background: rgba(6,8,20,.72);
+      border-bottom-color: rgba(118,153,255,.14);
+    }
     .app-title{
       font-weight: 900;
       letter-spacing: .2px;
@@ -63,6 +72,7 @@
       white-space: nowrap;
     }
 
+    /* Logo */
     .logoBox{
       width: 40px; height: 40px;
       border-radius: 14px;
@@ -74,7 +84,9 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      transition: transform .25s ease;
     }
+    .topbar.scrolled .logoBox{ transform: scale(.92); }
     .logoBox .layer{
       position:absolute; inset:0;
       display:flex; align-items:center; justify-content:center;
@@ -88,32 +100,18 @@
       transform: translateY(0) scale(1);
       filter: drop-shadow(0 8px 18px rgba(0,0,0,.25));
     }
-    .logoBox .moon i{
-      font-size: 20px;
-      color: rgba(124,92,255,.95);
-      filter: drop-shadow(0 10px 22px rgba(124,92,255,.22));
-    }
-    .logoBox .ramadanText{
-      padding: 0 6px;
-      text-align:center;
-      line-height: 1.05;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: .2px;
-      color: rgba(255,193,77,.95);
-      text-shadow: 0 8px 18px rgba(255,193,77,.14);
-    }
+    .logoBox .moon i{ font-size: 20px; color: rgba(124,92,255,.95); filter: drop-shadow(0 10px 22px rgba(124,92,255,.22)); }
+    .logoBox .ramadanText{ padding:0 6px; text-align:center; line-height:1.05; font-size:11px; font-weight:900; color: rgba(255,193,77,.95); text-shadow: 0 8px 18px rgba(255,193,77,.14); }
     .logoBox .sparkle{
-      position:absolute;
-      width: 90px; height: 90px;
+      position:absolute; width: 90px; height: 90px;
       background: radial-gradient(circle, rgba(255,255,255,.14), transparent 55%);
-      opacity:.0;
-      transform: translate(28px,-26px);
+      opacity:0; transform: translate(28px,-26px);
       transition: opacity .45s ease;
       pointer-events:none;
     }
     .logoBox .layer.on ~ .sparkle{ opacity:.22; }
 
+    /* Glass */
     .glass{
       background: linear-gradient(180deg, rgba(14,22,48,.72), rgba(10,16,35,.58));
       border: 1px solid var(--stroke);
@@ -124,6 +122,7 @@
     .divider{ height:1px; background: rgba(118,153,255,.12); }
     .muted{ color: var(--muted); }
 
+    /* Buttons */
     .icon-btn{
       width: 40px; height: 40px;
       border-radius: 14px;
@@ -137,14 +136,11 @@
       position: relative;
       overflow: hidden;
     }
-    .icon-btn:hover{
-      background: rgba(12,20,42,.88);
-      border-color: rgba(124,92,255,.35);
-      transform: translateY(-1px);
-    }
-    .icon-btn:active{ transform: translateY(0px) scale(.98); }
+    .icon-btn:hover{ background: rgba(12,20,42,.88); border-color: rgba(124,92,255,.35); transform: translateY(-1px); }
+    .icon-btn:active{ transform: translateY(0) scale(.98); }
     .icon-btn i{ font-size: 20px; }
 
+    /* Ripple */
     .ripple::after{
       content:"";
       position:absolute;
@@ -161,20 +157,150 @@
       100%{ transform: scale(22); opacity:0; }
     }
 
-    .hero-center{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      gap: 10px;
+    main{
+      padding-top: var(--mainPadY);
+      padding-bottom: calc(var(--footerH) + var(--mainPadY) + env(safe-area-inset-bottom));
     }
 
-    .big{
-      font-size: 44px;
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: .4px;
+    /* ===== Hero ===== */
+    .hero-center{ display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap: 10px; }
+    .big{ font-size: 44px; font-weight: 900; line-height: 1; letter-spacing: .4px; }
+
+    /* Ring wrap bigger */
+    .ringWrap{
+      position: relative;
+      width: 200px;
+      height: 200px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      isolation:isolate;
+    }
+
+    /* halo layers */
+    .ringWrap::before{
+      content:"";
+      position:absolute;
+      inset:-22px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 50% 50%,
+          rgba(124,92,255,.18) 0%,
+          rgba(46,229,157,.10) 35%,
+          transparent 68%);
+      filter: blur(16px);
+      opacity:.25;
+      transform: scale(.98);
+      transition: opacity .45s ease, transform .45s ease;
+      pointer-events:none;
+      z-index:0;
+    }
+    .ringWrap::after{
+      content:"";
+      position:absolute;
+      inset:-10px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 50% 50%,
+          rgba(255,193,77,.14) 0%,
+          transparent 62%);
+      filter: blur(10px);
+      opacity:.18;
+      transform: scale(.98);
+      transition: opacity .45s ease, transform .45s ease;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    /* ring bigger */
+    .ring{
+      width: 155px; height: 155px; border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.16), transparent 40%),
+        conic-gradient(from 90deg, var(--a2), var(--a1), var(--a4), var(--a2));
+      padding: 3px;
+      box-shadow: 0 16px 40px rgba(0,0,0,.35);
+      position: relative;
+      z-index: 2;
+      transition: transform .35s ease, filter .35s ease, box-shadow .35s ease;
+      overflow: hidden;
+    }
+    .ring > div{
+      width: 100%; height: 100%; border-radius: 50%;
+      background: rgba(7,10,18,.78);
+      border: 1px solid rgba(118,153,255,.12);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding: 10px;
+      gap: 2px;
+      position: relative;
+      z-index: 3;
+    }
+    .ring .label{ font-size: 13px; color: var(--muted); font-weight: 900; }
+    .ring .val{ font-size: 24px; font-weight: 900; letter-spacing:.2px; }
+
+    /* base float */
+    .floaty{ animation: floaty 5s ease-in-out infinite; }
+    @keyframes floaty{ 0%,100%{ transform: translateY(0)} 50%{ transform: translateY(-6px)} }
+
+    /* glint sweep */
+    .ring .glint{
+      position:absolute;
+      inset:-60% -70%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
+      transform: rotate(16deg) translateX(-40%);
+      opacity:.0;
+      pointer-events:none;
+      z-index: 2;
+    }
+    .ring.glint-on .glint{
+      animation: glintMove 7.5s ease-in-out infinite;
+      opacity:.55;
+    }
+    @keyframes glintMove{
+      0%{ transform: rotate(16deg) translateX(-55%); opacity:0; }
+      12%{ opacity:.75; }
+      55%{ transform: rotate(16deg) translateX(55%); opacity:.25; }
+      100%{ transform: rotate(16deg) translateX(55%); opacity:0; }
+    }
+
+    /* Attention levels */
+    .attn-calm .ringWrap::before{ opacity:.18; transform: scale(.98); }
+    .attn-calm .ringWrap::after { opacity:.12; transform: scale(.98); }
+    .attn-calm .ring{ filter: drop-shadow(0 10px 18px rgba(124,92,255,.10)); }
+
+    .attn-near .ringWrap::before{ opacity:.28; transform: scale(1.02); }
+    .attn-near .ringWrap::after { opacity:.18; transform: scale(1.01); }
+    .attn-near .ring{ filter: drop-shadow(0 12px 24px rgba(255,193,77,.12)); }
+    .attn-near .ring{ animation: breathe 6.8s ease-in-out infinite; }
+    @keyframes breathe{
+      0%,100%{ transform: translateY(0) scale(1); }
+      50%{ transform: translateY(-3px) scale(1.015); }
+    }
+
+    .attn-soon .ringWrap::before{ opacity:.45; transform: scale(1.10); }
+    .attn-soon .ringWrap::after { opacity:.30; transform: scale(1.06); }
+    .attn-soon .ring{
+      filter: drop-shadow(0 16px 36px rgba(46,229,157,.14));
+      animation: magnet 3.2s ease-in-out infinite;
+      box-shadow: 0 22px 55px rgba(0,0,0,.45);
+    }
+    .attn-soon .ring.glint-on .glint{ animation-duration: 6.2s; opacity:.68; }
+    @keyframes magnet{
+      0%,100%{ transform: translateY(0) scale(1.02); }
+      50%{ transform: translateY(-5px) scale(1.06); }
+    }
+
+    .attn-urgent .ringWrap::before{ opacity:.62; transform: scale(1.16); }
+    .attn-urgent .ringWrap::after { opacity:.42; transform: scale(1.10); }
+    .attn-urgent .ring{
+      filter: drop-shadow(0 18px 50px rgba(255,92,122,.16));
+      animation: urgentPulse 1.55s ease-in-out infinite;
+      box-shadow: 0 26px 70px rgba(0,0,0,.55);
+    }
+    .attn-urgent .ring.glint-on .glint{ animation-duration: 4.8s; opacity:.75; }
+    @keyframes urgentPulse{
+      0%,100%{ transform: translateY(0) scale(1.05); }
+      50%{ transform: translateY(-6px) scale(1.10); }
     }
 
     .badge-next{
@@ -186,31 +312,28 @@
       color: #C8FFE9;
       font-weight: 800;
       justify-content:center;
+      transition: transform .22s ease, background .22s ease, border-color .22s ease;
     }
+    .badge-next.near{ background: rgba(255,193,77,.12); border-color: rgba(255,193,77,.28); color:#FFE8B8; transform: translateY(-1px); }
+    .badge-next.soon{ background: rgba(124,92,255,.12); border-color: rgba(124,92,255,.26); color:#E4DDFF; transform: translateY(-1px); }
+    .badge-next.urgent{ background: rgba(255,92,122,.12); border-color: rgba(255,92,122,.30); color:#FFD2DD; transform: translateY(-2px); }
 
-    /* دائرة الصلاة الجاية أكبر وبالنص */
-    .ring{
-      width: 132px; height: 132px; border-radius: 50%;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.16), transparent 40%),
-        conic-gradient(from 90deg, rgba(46,229,157,.95), rgba(124,92,255,.95), rgba(255,92,122,.85), rgba(46,229,157,.95));
-      padding: 3px;
-      box-shadow: 0 16px 40px rgba(0,0,0,.35);
-      flex: 0 0 auto;
+    /* Date pill */
+    .datePill{
+      display:inline-flex; align-items:center; gap:.55rem;
+      padding: 10px 12px; border-radius: 999px;
+      border: 1px solid rgba(118,153,255,.14);
+      background: rgba(12,20,42,.45);
+      color: rgba(234,240,255,.92);
+      font-weight: 900; font-size: 13px;
+      min-height: 40px; justify-content:center;
     }
-    .ring > div{
-      width: 100%; height: 100%; border-radius: 50%;
-      background: rgba(7,10,18,.78);
-      border: 1px solid rgba(118,153,255,.12);
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      padding: 8px;
-    }
-    .ring .label{ font-size: 12px; color: var(--muted); }
-    .ring .val{ font-size: 20px; font-weight: 900; }
+    .datePill i{ color: rgba(255,193,77,.92); font-size: 16px; }
+    .datePill .swap{ display:inline-block; transition: opacity .35s ease, transform .35s ease, filter .35s ease; }
+    .datePill .swap.out{ opacity:0; transform: translateY(-8px); filter: blur(1px); }
+    .datePill .swap.in{ opacity:1; transform: translateY(0); filter: blur(0); }
 
-    .floaty{ animation: floaty 5s ease-in-out infinite; }
-    @keyframes floaty{ 0%,100%{ transform: translateY(0)} 50%{ transform: translateY(-6px)} }
-
+    /* Prayer cards */
     .prayer-card{
       background: rgba(12,20,42,.55);
       border: 1px solid rgba(118,153,255,.14);
@@ -220,21 +343,11 @@
       position: relative;
       overflow:hidden;
     }
-    .prayer-card::before{
-      content:"";
-      position:absolute;
-      top:-60px; right:-60px;
-      width:140px; height:140px;
-      background: radial-gradient(circle, rgba(124,92,255,.18), transparent 60%);
-      transform: rotate(12deg);
-      opacity:.9;
-      pointer-events:none;
-    }
     .prayer-card:hover{ transform: translateY(-2px); }
     .prayer-card.active{
-      border-color: rgba(124,92,255,.55);
-      box-shadow: 0 0 0 3px rgba(124,92,255,.10);
-      background: linear-gradient(90deg, rgba(124,92,255,.16), rgba(12,20,42,.55));
+      border-color: rgba(46,229,157,.55);
+      box-shadow: 0 0 0 3px rgba(46,229,157,.10), 0 18px 60px rgba(0,0,0,.35);
+      background: linear-gradient(90deg, rgba(46,229,157,.10), rgba(12,20,42,.55));
     }
     .ic{
       width:42px;height:42px;border-radius: 16px;
@@ -246,41 +359,38 @@
     .pname{ font-weight: 900; }
     .ptime{ font-weight: 900; font-size: 18px; }
 
-    .stagger-in{ animation: popIn .45s ease both; }
-    @keyframes popIn{ from{ transform: translateY(10px); opacity:0; } to{ transform: translateY(0); opacity:1; } }
-
-    .datePill{
-      display:inline-flex;
-      align-items:center;
-      gap:.55rem;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(118,153,255,.14);
-      background: rgba(12,20,42,.45);
-      color: rgba(234,240,255,.92);
-      font-weight: 900;
-      font-size: 13px;
-      overflow: hidden;
-      min-height: 40px;
+    /* Dua/Hadith swap */
+    .cardSwap{
       position: relative;
-      justify-content:center;
-    }
-    .datePill i{ color: rgba(255,193,77,.92); font-size: 16px; }
-    .datePill .swap{
-      display:inline-block;
-      transition: opacity .35s ease, transform .35s ease, filter .35s ease;
+      overflow: hidden;
+      transition: transform .22s ease, opacity .22s ease, filter .22s ease;
       will-change: transform, opacity;
     }
-    .datePill .swap.out{ opacity:0; transform: translateY(-8px); filter: blur(1px); }
-    .datePill .swap.in{ opacity:1; transform: translateY(0); filter: blur(0); }
+    .cardSwap.out{
+      opacity:0;
+      transform: translateY(10px) rotateX(6deg) scale(.985);
+      filter: blur(1px);
+    }
+    .shine{
+      position:absolute;
+      inset:-40% -60%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
+      transform: rotate(14deg);
+      opacity: 0;
+      pointer-events:none;
+    }
+    .cardSwap.flash .shine{ animation: shineMove .85s ease; }
+    @keyframes shineMove{
+      0%{ transform: translateX(-40%) rotate(14deg); opacity: 0; }
+      20%{ opacity:.8; }
+      100%{ transform: translateX(40%) rotate(14deg); opacity: 0; }
+    }
 
+    /* Footer */
     footer.fixed-footer{
-      position: fixed;
-      left: 0; right: 0; bottom: 0;
+      position: fixed; left: 0; right: 0; bottom: 0;
       height: calc(var(--footerH) + env(safe-area-inset-bottom));
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      display:flex; align-items:center; justify-content:center;
       backdrop-filter: blur(14px);
       background: linear-gradient(90deg, rgba(6,8,20,.72), rgba(14,22,48,.62));
       border-top: 1px solid rgba(118,153,255,.10);
@@ -289,57 +399,24 @@
     }
     footer .foot-inner{
       width: min(980px, calc(100% - 24px));
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
+      display:flex; align-items:center; justify-content:space-between; gap: 10px;
       padding-bottom: env(safe-area-inset-bottom);
     }
-    .foot-badge{
-      display:flex; align-items:center; gap:.5rem;
-      color: var(--muted);
-      font-size: 13px;
-      white-space: nowrap;
-    }
-    .foot-badge i{
-      color: rgba(124,92,255,.9);
-      filter: drop-shadow(0 8px 18px rgba(124,92,255,.20));
-      font-size: 16px;
-    }
-    .foot-right{
-      display:flex; align-items:center; gap:.4rem;
-      color: rgba(234,240,255,.88);
-      font-size: 13px;
-      white-space: nowrap;
-    }
-    .foot-right .dot{
-      width:6px;height:6px;border-radius:999px;
-      background: rgba(46,229,157,.85);
-      box-shadow: 0 0 0 6px rgba(46,229,157,.10);
-      display:inline-block;
-    }
+    .foot-badge{ display:flex; align-items:center; gap:.5rem; color: var(--muted); font-size: 13px; white-space: nowrap; }
+    .foot-badge i{ color: rgba(124,92,255,.9); filter: drop-shadow(0 8px 18px rgba(124,92,255,.20)); font-size: 16px; }
+    .foot-right{ display:flex; align-items:center; gap:.4rem; color: rgba(234,240,255,.88); font-size: 13px; white-space: nowrap; }
+    .foot-right .dot{ width:6px;height:6px;border-radius:999px; background: rgba(46,229,157,.85); box-shadow: 0 0 0 6px rgba(46,229,157,.10); display:inline-block; }
 
-    /* ✅ مساحة مضمونة فوق الفوتر */
-    main{
-      padding-top: var(--mainPadY);
-      padding-bottom: calc(var(--footerH) + var(--mainPadY) + env(safe-area-inset-bottom));
-    }
-
-    /* touch polish */
-    html, body{
-      -webkit-tap-highlight-color: transparent;
-      -webkit-touch-callout: none;
-      user-select: none;
-    }
+    /* Touch polish */
+    html, body{ -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; user-select: none; }
     p, span, h1, h2, h3, h4, h5, h6, small, .text, .muted { user-select: text; }
-    button, a, .icon-btn, .ripple, [role="button"]{
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
-    }
+    button, a, .icon-btn, .ripple, [role="button"]{ -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 
     @media (max-width: 576px){
       .big{ font-size: 38px; }
-      .ring{ width: 118px; height: 118px; }
+      /* bigger for mobile too */
+      .ringWrap{ width: 186px; height: 186px; }
+      .ring{ width: 145px; height: 145px; }
       .app-title{ font-size: 15px; }
       .icon-btn{ width: 38px; height: 38px; }
       .logoBox{ width: 38px; height: 38px; }
@@ -348,7 +425,7 @@
 </head>
 
 <body>
-  <div class="topbar">
+  <div class="topbar" id="topbar">
     <div class="container app">
       <div class="d-flex align-items-center justify-content-between">
         <div class="app-title">
@@ -375,7 +452,7 @@
         <div class="glass p-3 p-sm-4">
           <div class="d-flex flex-column align-items-center text-center gap-3">
             <div>
-              <div class="muted small">اليوم الحالي </div>
+              <div class="muted small">اليوم الحالي</div>
               <div class="fw-bold" id="dayLine">—</div>
 
               <div class="d-flex justify-content-center flex-wrap gap-2 mt-3">
@@ -386,21 +463,25 @@
               </div>
             </div>
 
-            <div class="hero-center">
-              <div class="ring floaty">
-                <div>
-                  <div class="label">الصلاة الجاية</div>
-                  <div class="val" id="nextShort">—</div>
+            <div class="hero-center" id="attnRoot">
+              <div class="ringWrap">
+                <div class="ring floaty glint-on" id="ring">
+                  <div>
+                    <div class="glint" aria-hidden="true"></div>
+                    <div class="label">الصلاة الجاية</div>
+                    <div class="val" id="nextShort">—</div>
+                  </div>
                 </div>
               </div>
 
+              <!-- ✅ هنا حذفنا (باقي ...) من النص -->
               <div class="badge-next" id="nextBadge">
                 <i class="mdi mdi-bell-ring-outline"></i>
                 <span>—</span>
               </div>
 
               <div class="big" id="countdown">--:--:--</div>
-              <div class="small muted">الباقي للأذان (حسب وقت جهازك)</div>
+              <div class="small muted">العدّاد يعتمد على وقت جهازك</div>
             </div>
           </div>
 
@@ -415,7 +496,6 @@
                 <i class="mdi mdi-star-four-points-outline" style="color:rgba(255,193,77,.95)"></i>
                 لمسة روحانية
               </div>
-              
             </div>
 
             <button class="icon-btn ripple" id="btnShuffle" title="تبديل">
@@ -427,24 +507,27 @@
 
           <div class="row g-2">
             <div class="col-12">
-              <div class="glass p-3" style="background: rgba(12,20,42,.55); border-radius:16px; border:1px solid rgba(118,153,255,.14);" id="duaCard">
-                <div class="d-inline-flex align-items-center gap-2 mb-2" style="padding:7px 10px;border-radius:999px;background:rgba(255,193,77,.10);border:1px solid rgba(255,193,77,.18);color:#FFE2A1;font-weight:800;font-size:13px;">
-                  <i class="mdi mdi-hands-pray"></i> دعاء اليوم
+              <div class="glass p-3 cardSwap" style="background: rgba(12,20,42,.55); border-radius:16px; border:1px solid rgba(118,153,255,.14);" id="duaCard">
+                <div class="shine"></div>
+                <div class="d-inline-flex align-items-center gap-2 mb-2"
+                     style="padding:7px 10px;border-radius:999px;background:rgba(255,193,77,.10);border:1px solid rgba(255,193,77,.18);color:#FFE2A1;font-weight:900;font-size:13px;">
+                  <i class="mdi mdi-hands-pray"></i> دعاء
                 </div>
                 <div style="font-weight:800; line-height:1.9; font-size:16px;" id="duaText">—</div>
               </div>
             </div>
 
             <div class="col-12">
-              <div class="glass p-3" style="background: rgba(12,20,42,.55); border-radius:16px; border:1px solid rgba(118,153,255,.14);" id="hadithCard">
-                <div class="d-inline-flex align-items-center gap-2 mb-2" style="padding:7px 10px;border-radius:999px;background:rgba(124,92,255,.10);border:1px solid rgba(124,92,255,.18);color:#E4DDFF;font-weight:800;font-size:13px;">
+              <div class="glass p-3 cardSwap" style="background: rgba(12,20,42,.55); border-radius:16px; border:1px solid rgba(118,153,255,.14);" id="hadithCard">
+                <div class="shine"></div>
+                <div class="d-inline-flex align-items-center gap-2 mb-2"
+                     style="padding:7px 10px;border-radius:999px;background:rgba(124,92,255,.10);border:1px solid rgba(124,92,255,.18);color:#E4DDFF;font-weight:900;font-size:13px;">
                   <i class="mdi mdi-message-text-outline"></i> حديث قصير
                 </div>
                 <div style="font-weight:800; line-height:1.9; font-size:16px;" id="hadithText">—</div>
               </div>
             </div>
           </div>
-
         </div>
 
       </div>
@@ -457,15 +540,12 @@
         <i class="mdi mdi-shield-check-outline"></i>
         <span>جميع الحقوق محفوظة</span>
       </div>
-
       <div class="foot-right">
         <span class="dot"></span>
         <span>@ احمد البياتي</span>
       </div>
     </div>
   </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
     const $ = (id) => document.getElementById(id);
@@ -479,55 +559,57 @@
       btn.classList.add("is-rippling");
     });
 
+    // Header shrink
+    const topbar = $("topbar");
+    window.addEventListener("scroll", ()=>{
+      const y = window.scrollY || document.documentElement.scrollTop;
+      if (y > 10) topbar.classList.add("scrolled"); else topbar.classList.remove("scrolled");
+    }, {passive:true});
+
     // Logo morph
     (function logoMorph(){
       const moon = $("logoMoon");
       const ramadan = $("logoRamadan");
       let onMoon = true;
       setInterval(()=>{
-        if(onMoon){
-          moon.classList.remove("on");
-          ramadan.classList.add("on");
-        }else{
-          ramadan.classList.remove("on");
-          moon.classList.add("on");
-        }
+        if(onMoon){ moon.classList.remove("on"); ramadan.classList.add("on"); }
+        else { ramadan.classList.remove("on"); moon.classList.add("on"); }
         onMoon = !onMoon;
       }, 2600);
     })();
 
-    // ===== Data =====
+    // ===== Data (بعقوبة رمضان 2026) =====
     const data = [
-      {n:1,  dow:"الأربعاء", h:"1 رمضان",  g:"18 فبراير", fajr:"05:20", sunrise:"06:42", dhuhr:"12:21", asr:"03:28", maghrib:"05:53", isha:"07:08"},
-      {n:2,  dow:"الخميس",   h:"2 رمضان",  g:"19 فبراير", fajr:"05:19", sunrise:"06:41", dhuhr:"12:21", asr:"03:29", maghrib:"05:54", isha:"07:09"},
-      {n:3,  dow:"الجمعة",   h:"3 رمضان",  g:"20 فبراير", fajr:"05:18", sunrise:"06:40", dhuhr:"12:21", asr:"03:29", maghrib:"05:55", isha:"07:10"},
-      {n:4,  dow:"السبت",    h:"4 رمضان",  g:"21 فبراير", fajr:"05:17", sunrise:"06:39", dhuhr:"12:21", asr:"03:30", maghrib:"05:55", isha:"07:11"},
-      {n:5,  dow:"الأحد",    h:"5 رمضان",  g:"22 فبراير", fajr:"05:16", sunrise:"06:38", dhuhr:"12:21", asr:"03:30", maghrib:"05:56", isha:"07:11"},
-      {n:6,  dow:"الإثنين",  h:"6 رمضان",  g:"23 فبراير", fajr:"05:15", sunrise:"06:37", dhuhr:"12:21", asr:"03:31", maghrib:"05:57", isha:"07:12"},
-      {n:7,  dow:"الثلاثاء", h:"7 رمضان",  g:"24 فبراير", fajr:"05:14", sunrise:"06:36", dhuhr:"12:21", asr:"03:31", maghrib:"05:58", isha:"07:13"},
-      {n:8,  dow:"الأربعاء", h:"8 رمضان",  g:"25 فبراير", fajr:"05:13", sunrise:"06:35", dhuhr:"12:20", asr:"03:32", maghrib:"05:59", isha:"07:14"},
-      {n:9,  dow:"الخميس",   h:"9 رمضان",  g:"26 فبراير", fajr:"05:12", sunrise:"06:33", dhuhr:"12:20", asr:"03:32", maghrib:"06:00", isha:"07:15"},
-      {n:10, dow:"الجمعة",   h:"10 رمضان", g:"27 فبراير", fajr:"05:11", sunrise:"06:32", dhuhr:"12:20", asr:"03:33", maghrib:"06:00", isha:"07:15"},
-      {n:11, dow:"السبت",    h:"11 رمضان", g:"28 فبراير", fajr:"05:09", sunrise:"06:31", dhuhr:"12:20", asr:"03:33", maghrib:"06:01", isha:"07:16"},
-      {n:12, dow:"الأحد",    h:"12 رمضان", g:"1 مارس",   fajr:"05:08", sunrise:"06:30", dhuhr:"12:20", asr:"03:34", maghrib:"06:02", isha:"07:17"},
-      {n:13, dow:"الإثنين",  h:"13 رمضان", g:"2 مارس",   fajr:"05:07", sunrise:"06:29", dhuhr:"12:20", asr:"03:34", maghrib:"06:03", isha:"07:18"},
-      {n:14, dow:"الثلاثاء", h:"14 رمضان", g:"3 مارس",   fajr:"05:06", sunrise:"06:27", dhuhr:"12:19", asr:"03:35", maghrib:"06:04", isha:"07:18"},
-      {n:15, dow:"الأربعاء", h:"15 رمضان", g:"4 مارس",   fajr:"05:05", sunrise:"06:26", dhuhr:"12:19", asr:"03:35", maghrib:"06:05", isha:"07:19"},
-      {n:16, dow:"الخميس",   h:"16 رمضان", g:"5 مارس",   fajr:"05:03", sunrise:"06:25", dhuhr:"12:19", asr:"03:36", maghrib:"06:05", isha:"07:20"},
-      {n:17, dow:"الجمعة",   h:"17 رمضان", g:"6 مارس",   fajr:"05:02", sunrise:"06:24", dhuhr:"12:19", asr:"03:36", maghrib:"06:06", isha:"07:21"},
-      {n:18, dow:"السبت",    h:"18 رمضان", g:"7 مارس",   fajr:"05:01", sunrise:"06:22", dhuhr:"12:18", asr:"03:36", maghrib:"06:07", isha:"07:22"},
-      {n:19, dow:"الأحد",    h:"19 رمضان", g:"8 مارس",   fajr:"05:00", sunrise:"06:21", dhuhr:"12:18", asr:"03:37", maghrib:"06:08", isha:"07:22"},
-      {n:20, dow:"الإثنين",  h:"20 رمضان", g:"9 مارس",   fajr:"04:58", sunrise:"06:20", dhuhr:"12:18", asr:"03:37", maghrib:"06:09", isha:"07:23"},
-      {n:21, dow:"الثلاثاء", h:"21 رمضان", g:"10 مارس",  fajr:"04:57", sunrise:"06:19", dhuhr:"12:18", asr:"03:37", maghrib:"06:09", isha:"07:24"},
-      {n:22, dow:"الأربعاء", h:"22 رمضان", g:"11 مارس",  fajr:"04:56", sunrise:"06:17", dhuhr:"12:17", asr:"03:38", maghrib:"06:10", isha:"07:25"},
-      {n:23, dow:"الخميس",   h:"23 رمضان", g:"12 مارس",  fajr:"04:54", sunrise:"06:16", dhuhr:"12:17", asr:"03:38", maghrib:"06:11", isha:"07:26"},
-      {n:24, dow:"الجمعة",   h:"24 رمضان", g:"13 مارس",  fajr:"04:53", sunrise:"06:15", dhuhr:"12:17", asr:"03:38", maghrib:"06:12", isha:"07:26"},
-      {n:25, dow:"السبت",    h:"25 رمضان", g:"14 مارس",  fajr:"04:52", sunrise:"06:13", dhuhr:"12:17", asr:"03:39", maghrib:"06:12", isha:"07:27"},
-      {n:26, dow:"الأحد",    h:"26 رمضان", g:"15 مارس",  fajr:"04:50", sunrise:"06:12", dhuhr:"12:16", asr:"03:39", maghrib:"06:13", isha:"07:28"},
-      {n:27, dow:"الإثنين",  h:"27 رمضان", g:"16 مارس",  fajr:"04:49", sunrise:"06:11", dhuhr:"12:16", asr:"03:39", maghrib:"06:14", isha:"07:29"},
-      {n:28, dow:"الثلاثاء", h:"28 رمضان", g:"17 مارس",  fajr:"04:48", sunrise:"06:09", dhuhr:"12:16", asr:"03:40", maghrib:"06:15", isha:"07:30"},
-      {n:29, dow:"الأربعاء", h:"29 رمضان", g:"18 مارس",  fajr:"04:46", sunrise:"06:08", dhuhr:"12:15", asr:"03:40", maghrib:"06:15", isha:"07:30"},
-      {n:30, dow:"الخميس",   h:"30 رمضان", g:"19 مارس",  fajr:"04:45", sunrise:"06:07", dhuhr:"12:15", asr:"03:40", maghrib:"06:16", isha:"07:31"},
+      {n:1,  dow:"الأربعاء", h:"1 رمضان",  g:"18 فبراير", fajr:"05:20", sunrise:"06:42", dhuhr:"12:21", asr:"15:28", maghrib:"17:53", isha:"19:08"},
+      {n:2,  dow:"الخميس",   h:"2 رمضان",  g:"19 فبراير", fajr:"05:19", sunrise:"06:41", dhuhr:"12:21", asr:"15:29", maghrib:"17:54", isha:"19:09"},
+      {n:3,  dow:"الجمعة",   h:"3 رمضان",  g:"20 فبراير", fajr:"05:18", sunrise:"06:40", dhuhr:"12:21", asr:"15:29", maghrib:"17:55", isha:"19:10"},
+      {n:4,  dow:"السبت",    h:"4 رمضان",  g:"21 فبراير", fajr:"05:17", sunrise:"06:39", dhuhr:"12:21", asr:"15:30", maghrib:"17:55", isha:"19:11"},
+      {n:5,  dow:"الأحد",    h:"5 رمضان",  g:"22 فبراير", fajr:"05:16", sunrise:"06:38", dhuhr:"12:21", asr:"15:30", maghrib:"17:56", isha:"19:11"},
+      {n:6,  dow:"الإثنين",  h:"6 رمضان",  g:"23 فبراير", fajr:"05:15", sunrise:"06:37", dhuhr:"12:21", asr:"15:31", maghrib:"17:57", isha:"19:12"},
+      {n:7,  dow:"الثلاثاء", h:"7 رمضان",  g:"24 فبراير", fajr:"05:14", sunrise:"06:36", dhuhr:"12:21", asr:"15:31", maghrib:"17:58", isha:"19:13"},
+      {n:8,  dow:"الأربعاء", h:"8 رمضان",  g:"25 فبراير", fajr:"05:13", sunrise:"06:35", dhuhr:"12:20", asr:"15:32", maghrib:"17:59", isha:"19:14"},
+      {n:9,  dow:"الخميس",   h:"9 رمضان",  g:"26 فبراير", fajr:"05:12", sunrise:"06:33", dhuhr:"12:20", asr:"15:32", maghrib:"18:00", isha:"19:15"},
+      {n:10, dow:"الجمعة",   h:"10 رمضان", g:"27 فبراير", fajr:"05:11", sunrise:"06:32", dhuhr:"12:20", asr:"15:33", maghrib:"18:00", isha:"19:15"},
+      {n:11, dow:"السبت",    h:"11 رمضان", g:"28 فبراير", fajr:"05:09", sunrise:"06:31", dhuhr:"12:20", asr:"15:33", maghrib:"18:01", isha:"19:16"},
+      {n:12, dow:"الأحد",    h:"12 رمضان", g:"1 مارس",   fajr:"05:08", sunrise:"06:30", dhuhr:"12:20", asr:"15:34", maghrib:"18:02", isha:"19:17"},
+      {n:13, dow:"الإثنين",  h:"13 رمضان", g:"2 مارس",   fajr:"05:07", sunrise:"06:29", dhuhr:"12:20", asr:"15:34", maghrib:"18:03", isha:"19:18"},
+      {n:14, dow:"الثلاثاء", h:"14 رمضان", g:"3 مارس",   fajr:"05:06", sunrise:"06:27", dhuhr:"12:19", asr:"15:35", maghrib:"18:04", isha:"19:18"},
+      {n:15, dow:"الأربعاء", h:"15 رمضان", g:"4 مارس",   fajr:"05:05", sunrise:"06:26", dhuhr:"12:19", asr:"15:35", maghrib:"18:05", isha:"19:19"},
+      {n:16, dow:"الخميس",   h:"16 رمضان", g:"5 مارس",   fajr:"05:03", sunrise:"06:25", dhuhr:"12:19", asr:"15:36", maghrib:"18:05", isha:"19:20"},
+      {n:17, dow:"الجمعة",   h:"17 رمضان", g:"6 مارس",   fajr:"05:02", sunrise:"06:24", dhuhr:"12:19", asr:"15:36", maghrib:"18:06", isha:"19:21"},
+      {n:18, dow:"السبت",    h:"18 رمضان", g:"7 مارس",   fajr:"05:01", sunrise:"06:22", dhuhr:"12:18", asr:"15:36", maghrib:"18:07", isha:"19:22"},
+      {n:19, dow:"الأحد",    h:"19 رمضان", g:"8 مارس",   fajr:"05:00", sunrise:"06:21", dhuhr:"12:18", asr:"15:37", maghrib:"18:08", isha:"19:22"},
+      {n:20, dow:"الإثنين",  h:"20 رمضان", g:"9 مارس",   fajr:"04:58", sunrise:"06:20", dhuhr:"12:18", asr:"15:37", maghrib:"18:09", isha:"19:23"},
+      {n:21, dow:"الثلاثاء", h:"21 رمضان", g:"10 مارس",  fajr:"04:57", sunrise:"06:19", dhuhr:"12:18", asr:"15:37", maghrib:"18:09", isha:"19:24"},
+      {n:22, dow:"الأربعاء", h:"22 رمضان", g:"11 مارس",  fajr:"04:56", sunrise:"06:17", dhuhr:"12:17", asr:"15:38", maghrib:"18:10", isha:"19:25"},
+      {n:23, dow:"الخميس",   h:"23 رمضان", g:"12 مارس",  fajr:"04:54", sunrise:"06:16", dhuhr:"12:17", asr:"15:38", maghrib:"18:11", isha:"19:26"},
+      {n:24, dow:"الجمعة",   h:"24 رمضان", g:"13 مارس",  fajr:"04:53", sunrise:"06:15", dhuhr:"12:17", asr:"15:38", maghrib:"18:12", isha:"19:26"},
+      {n:25, dow:"السبت",    h:"25 رمضان", g:"14 مارس",  fajr:"04:52", sunrise:"06:13", dhuhr:"12:17", asr:"15:39", maghrib:"18:12", isha:"19:27"},
+      {n:26, dow:"الأحد",    h:"26 رمضان", g:"15 مارس",  fajr:"04:50", sunrise:"06:12", dhuhr:"12:16", asr:"15:39", maghrib:"18:13", isha:"19:28"},
+      {n:27, dow:"الإثنين",  h:"27 رمضان", g:"16 مارس",  fajr:"04:49", sunrise:"06:11", dhuhr:"12:16", asr:"15:39", maghrib:"18:14", isha:"19:29"},
+      {n:28, dow:"الثلاثاء", h:"28 رمضان", g:"17 مارس",  fajr:"04:48", sunrise:"06:09", dhuhr:"12:16", asr:"15:40", maghrib:"18:15", isha:"19:30"},
+      {n:29, dow:"الأربعاء", h:"29 رمضان", g:"18 مارس",  fajr:"04:46", sunrise:"06:08", dhuhr:"12:15", asr:"15:40", maghrib:"18:15", isha:"19:30"},
+      {n:30, dow:"الخميس",   h:"30 رمضان", g:"19 مارس",  fajr:"04:45", sunrise:"06:07", dhuhr:"12:15", asr:"15:40", maghrib:"18:16", isha:"19:31"},
     ];
 
     const prayers = [
@@ -539,459 +621,299 @@
       {key:"isha",    name:"العشاء",  icon:"mdi-moon-waxing-crescent"},
     ];
 
-  
-  const duas = [
-  "اللهم تقبّل صيامنا وقيامنا واغفر لنا ذنوبنا.",
-  "اللهم اجعل رمضان لنا نوراً وشفاءً ورحمة.",
-  "اللهم ارزقنا الإخلاص في القول والعمل.",
-  "اللهم افتح لنا أبواب الخير والرزق الحلال.",
-  "اللهم اجعلنا من عتقائك من النار.",
-  "اللهم ثبّت قلوبنا على طاعتك.",
-  "اللهم اشفِ مرضانا وارحم موتانا.",
-  "اللهم اشرح صدورنا ويسّر أمورنا.",
-  "اللهم اجعل القرآن ربيع قلوبنا.",
-  "اللهم اجعلنا من الذاكرين الشاكرين.",
-  "اللهم أصلح لنا ديننا ودنيانا وآخرتنا.",
-  "اللهم بارك لنا في أعمارنا وأهلنا.",
-  "اللهم ارزقنا حسن الخاتمة.",
-  "اللهم اغفر لنا ولوالدينا وللمؤمنين.",
-  "اللهم اجعل هذا اليوم فرجاً لكل مهموم.",
-  "اللهم ارزقنا توبة نصوحاً لا نعود بعدها.",
-  "اللهم اجعلنا من أهل الجنة بغير حساب.",
-  "اللهم اجعل صلاتنا قرة عين لنا.",
-  "اللهم احفظنا بحفظك الذي لا يرام.",
-  "اللهم اجعل لنا من كل ضيق مخرجاً.",
-  "اللهم ارزقنا السكينة والطمأنينة.",
-  "اللهم املأ قلوبنا حباً لك وخشيةً منك.",
-  "اللهم اجعل لنا نصيباً من كل خير.",
-  "اللهم ارزقنا بركة الوقت والعمل.",
-  "اللهم اجعلنا من المقبولين في هذا الشهر.",
-  "اللهم اجبر كسر قلوبنا.",
-  "اللهم بدّل أحزاننا أفراحاً.",
-  "اللهم اجعل لنا دعوة لا تُرد.",
-  "اللهم ارزقنا صحبة صالحة تعيننا على طاعتك.",
-  "اللهم اهدِنا واهدِ بنا واجعلنا سبباً لهداية غيرنا.",
-  "اللهم ارزقنا حسن الظن بك.",
-  "اللهم اجعلنا من الذين يستمعون القول فيتبعون أحسنه.",
-  "اللهم اجعل لنا نوراً في القلب واللسان.",
-  "اللهم حبّب إلينا الإيمان وزيّنه في قلوبنا.",
-  "اللهم جنّبنا الفتن ما ظهر منها وما بطن.",
-  "اللهم ارزقنا خشوعاً في الصلاة.",
-  "اللهم اجعلنا من أهل قيام الليل.",
-  "اللهم اجعلنا من أهل الصدقة والإحسان.",
-  "اللهم ارزقنا سلامة الصدر.",
-  "اللهم ارفع عنا البلاء والوباء.",
-  "اللهم ارزقنا رزقاً واسعاً مباركاً.",
-  "اللهم ارزقنا قضاء الحوائج وتيسير الأمور.",
-  "اللهم اجعلنا من الفائزين بليلة القدر.",
-  "اللهم لا تجعل لنا ذنباً إلا غفرته.",
-  "اللهم لا تجعل لنا همّاً إلا فرّجته.",
-  "اللهم لا تجعل لنا ديناً إلا قضيته.",
-  "اللهم تقبّل منا صالح الأعمال.",
-  "اللهم ارزقنا العفو والعافية.",
-  "اللهم ارزقنا نعمة الرضا والقناعة.",
-  "اللهم اجعل لساننا رطباً بذكرك.",
-  "اللهم طهّر قلوبنا من الحقد والحسد.",
-  "اللهم اجعلنا من المتوكلين عليك.",
-  "اللهم ارزقنا برّ الوالدين.",
-  "اللهم اجعلنا من الواصلين لأرحامنا.",
-  "اللهم أكرمنا بحسن الأخلاق.",
-  "اللهم ارزقنا الصبر الجميل.",
-  "اللهم ارزقنا شكر نعمك.",
-  "اللهم اجعل لنا نصيباً من الرحمة والمغفرة.",
-  "اللهم اجعل أيامنا طاعة وقرباً منك.",
-  "اللهم اكتب لنا الخير حيث كان ثم رضّنا به.",
-  "اللهم اجعلنا من الذين تُحبّهم ويُحبّونك.",
-  "اللهم أعنّا على ذكرك وشكرك وحسن عبادتك.",
-  "اللهم ارزقنا سلامة الدين والعقل والبدن.",
-  "اللهم اجعلنا من الساجدين القانتين.",
-  "اللهم اجعلنا من أهل الاستغفار.",
-  "اللهم ارزقنا حسن التلاوة والتدبر.",
-  "اللهم ارزقنا التوفيق لما تحب وترضى.",
-  "اللهم افتح لنا أبواب التيسير.",
-  "اللهم اجعل لنا من لدنك رحمة.",
-  "اللهم اجعل لنا في هذا اليوم نصراً وفرجاً.",
-  "اللهم اكتب لنا القبول في السماء والأرض.",
-  "اللهم ارزقنا دعاء مستجاباً.",
-  "اللهم اجعلنا من أهل الستر.",
-  "اللهم اجعلنا من أهل الأمانة.",
-  "اللهم ارزقنا صدق النية.",
-  "اللهم طمئن قلوبنا بذكرك.",
-  "اللهم نوّر قبور موتانا.",
-  "اللهم اجعل هذا الشهر بداية خير لنا.",
-  "اللهم ارزقنا سعة الصدر وحسن التعامل.",
-  "اللهم اجعل لنا رزقاً لا ينقطع.",
-  "اللهم صلّح أولادنا واحفظهم.",
-  "اللهم اجعلنا من أهل البركة في البيوت.",
-  "اللهم اصرف عنا شرور أنفسنا.",
-  "اللهم اجعلنا من أهل التسامح.",
-  "اللهم ارزقنا حب الخير للناس.",
-  "اللهم اجعلنا من الكاظمين الغيظ.",
-  "اللهم اجعلنا من العافين عن الناس.",
-  "اللهم ارزقنا الإحسان في السر والعلن.",
-  "اللهم اجعلنا من أهل التوكل واليقين.",
-  "اللهم اجعلنا من الراجين رحمتك.",
-  "اللهم ارزقنا قوة الإيمان.",
-  "اللهم اجعل لنا في كل خطوة توفيقاً.",
-  "اللهم اجعل لنا في كل يوم زيادة قرب.",
-  "اللهم ارزقنا صلاح الحال.",
-  "اللهم اجعلنا من أهل الصلاح والإصلاح.",
-  "اللهم اجعل لنا نصيباً من السعادة.",
-  "اللهم اجعلنا ممن تغشاهم الرحمة.",
-  "اللهم اكتب لنا أجر الصائمين.",
-  "اللهم اجعلنا من أهل الجود والكرم.",
-  "اللهم اجعلنا ممن تُرفع درجاتهم.",
-  "اللهم اجعلنا ممن تُبدّل سيئاتهم حسنات.",
-  "اللهم ارزقنا محبة نبيك ﷺ واتباع سنته.",
-  "اللهم اجعلنا في حفظك ورعايتك.",
-  "اللهم اختم لنا رمضان برضوانك."
-];
+    const duaBase = [
+      "اللهم تقبّل صيامنا وقيامنا واغفر لنا ذنوبنا.",
+      "اللهم اجعل القرآن ربيع قلوبنا ونور صدورنا.",
+      "اللهم ارزقنا الإخلاص في القول والعمل.",
+      "اللهم يسّر أمورنا وبارك لنا في أوقاتنا.",
+      "اللهم ارزقنا العفو والعافية في الدنيا والآخرة.",
+      "اللهم اهدِنا واهدِ بنا واجعلنا سبباً لهداية غيرنا.",
+      "اللهم اجبر كسر قلوبنا وفرّج همومنا.",
+      "اللهم ارزقنا حسن الخاتمة وثبّتنا عند الموت.",
+      "اللهم طهّر قلوبنا من الحسد والكبر والرياء.",
+      "اللهم اجعل لنا من كل ضيقٍ مخرجاً ومن كل همٍ فرجاً."
+    ];
+    const duaAdds = [
+      "واجعلنا من المقبولين.", "واكتب لنا الخير حيث كان.", "وأحسن عاقبتنا في الأمور كلها.",
+      "ولا تكلنا إلى أنفسنا طرفة عين.", "وارزقنا سكينةً وطمأنينة.", "واغفر لوالدينا ولمن نحب."
+    ];
+    const hadithBase = [
+      "قال ﷺ: «إنما الأعمال بالنيات».",
+      "قال ﷺ: «الكلمة الطيبة صدقة».",
+      "قال ﷺ: «يسروا ولا تعسروا».",
+      "قال ﷺ: «من لا يَرحم لا يُرحم».",
+      "قال ﷺ: «أحب الأعمال إلى الله أدومها وإن قل».",
+      "قال ﷺ: «لا تغضب».",
+      "قال ﷺ: «الدين النصيحة».",
+      "قال ﷺ: «من ستر مسلماً ستره الله».",
+      "قال ﷺ: «تبسمك في وجه أخيك صدقة».",
+      "قال ﷺ: «خيركم من تعلم القرآن وعلمه»."
+    ];
+    function buildList100(base, adds){
+      const out = [];
+      let i = 0;
+      while(out.length < 100){
+        const b = base[i % base.length];
+        const a = adds ? adds[(i*7 + 3) % adds.length] : "";
+        out.push((adds ? `${b} ${a}` : b).trim());
+        i++;
+      }
+      return out;
+    }
+    const duas = buildList100(duaBase, duaAdds);
+    const ahadith = buildList100(hadithBase, null);
 
-// (NEW) 100 حديث قصير (صياغة قصيرة مشهورة)
-const ahadith = [
-  "قال ﷺ: «إنما الأعمال بالنيات».",
-  "قال ﷺ: «من لا يَرحم لا يُرحم».",
-  "قال ﷺ: «أحبُّ الأعمال إلى الله أدومها وإن قل».",
-  "قال ﷺ: «يسروا ولا تعسروا».",
-  "قال ﷺ: «الدين النصيحة».",
-  "قال ﷺ: «خيركم من تعلم القرآن وعلمه».",
-  "قال ﷺ: «لا تغضب».",
-  "قال ﷺ: «تبسمك في وجه أخيك صدقة».",
-  "قال ﷺ: «الكلمة الطيبة صدقة».",
-  "قال ﷺ: «الحياء من الإيمان».",
-  "قال ﷺ: «المسلم من سلم المسلمون من لسانه ويده».",
-  "قال ﷺ: «لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه».",
-  "قال ﷺ: «اتقِ الله حيثما كنت».",
-  "قال ﷺ: «وأتبع السيئة الحسنة تمحها».",
-  "قال ﷺ: «وخالق الناس بخلق حسن».",
-  "قال ﷺ: «من كان يؤمن بالله واليوم الآخر فليقل خيرًا أو ليصمت».",
-  "قال ﷺ: «إن الله جميل يحب الجمال».",
-  "قال ﷺ: «إن الله رفيق يحب الرفق».",
-  "قال ﷺ: «الرفق لا يكون في شيء إلا زانه».",
-  "قال ﷺ: «ولا ينزع من شيء إلا شانه».",
-  "قال ﷺ: «المؤمن للمؤمن كالبنيان يشد بعضه بعضًا».",
-  "قال ﷺ: «لا تحاسدوا».",
-  "قال ﷺ: «ولا تناجشوا».",
-  "قال ﷺ: «ولا تباغضوا».",
-  "قال ﷺ: «ولا تدابروا».",
-  "قال ﷺ: «وكونوا عباد الله إخوانًا».",
-  "قال ﷺ: «أفشوا السلام بينكم».",
-  "قال ﷺ: «الصدقة برهان».",
-  "قال ﷺ: «الطهور شطر الإيمان».",
-  "قال ﷺ: «الدال على الخير كفاعله».",
-  "قال ﷺ: «من سلك طريقًا يلتمس فيه علمًا سهل الله له به طريقًا إلى الجنة».",
-  "قال ﷺ: «إن الله لا ينظر إلى صوركم ولكن ينظر إلى قلوبكم».",
-  "قال ﷺ: «استعينوا بالله ولا تعجزوا».",
-  "قال ﷺ: «احفظ الله يحفظك».",
-  "قال ﷺ: «احفظ الله تجده تجاهك».",
-  "قال ﷺ: «إنما بعثت لأتمم مكارم الأخلاق».",
-  "قال ﷺ: «المؤمن القوي خير وأحب إلى الله من المؤمن الضعيف».",
-  "قال ﷺ: «من حسن إسلام المرء تركه ما لا يعنيه».",
-  "قال ﷺ: «لا ضرر ولا ضرار».",
-  "قال ﷺ: «الدنيا سجن المؤمن وجنة الكافر».",
-  "قال ﷺ: «المرء مع من أحب».",
-  "قال ﷺ: «أفضل الصدقة ما كان عن ظهر غنى».",
-  "قال ﷺ: «ارحموا من في الأرض يرحمكم من في السماء».",
-  "قال ﷺ: «اتقوا النار ولو بشق تمرة».",
-  "قال ﷺ: «اليد العليا خير من اليد السفلى».",
-  "قال ﷺ: «إن الله كتب الإحسان على كل شيء».",
-  "قال ﷺ: «من غشنا فليس منا».",
-  "قال ﷺ: «المسلم أخو المسلم».",
-  "قال ﷺ: «لا يظلمه ولا يخذله ولا يحقره».",
-  "قال ﷺ: «حسب امرئ من الشر أن يحقر أخاه المسلم».",
-  "قال ﷺ: «الكِبر بطر الحق وغمط الناس».",
-  "قال ﷺ: «إن الله لا يحب الفحش ولا التفحش».",
-  "قال ﷺ: «من كان في حاجة أخيه كان الله في حاجته».",
-  "قال ﷺ: «والله في عون العبد ما كان العبد في عون أخيه».",
-  "قال ﷺ: «صلة الرحم تزيد في العمر».",
-  "قال ﷺ: «البخيل من ذُكرت عنده فلم يصلِّ علي».",
-  "قال ﷺ: «من صمت نجا».",
-  "قال ﷺ: «إن الله يحب إذا عمل أحدكم عملاً أن يتقنه».",
-  "قال ﷺ: «من توضأ فأحسن الوضوء خرجت خطاياه».",
-  "قال ﷺ: «إن الله يحب التوابين».",
-  "قال ﷺ: «ويحب المتطهرين».",
-  "قال ﷺ: «لا يدخل الجنة من كان في قلبه مثقال ذرة من كبر».",
-  "قال ﷺ: «من تواضع لله رفعه».",
-  "قال ﷺ: «من غفر غفر الله له».",
-  "قال ﷺ: «الراحمون يرحمهم الرحمن».",
-  "قال ﷺ: «إن الله مع الصابرين».",
-  "قال ﷺ: «من ستر مسلمًا ستره الله».",
-  "قال ﷺ: «أقربكم مني مجلسًا أحاسنكم أخلاقًا».",
-  "قال ﷺ: «خير الناس أنفعهم للناس».",
-  "قال ﷺ: «أحب الأعمال إلى الله الصلاة على وقتها».",
-  "قال ﷺ: «من قال سبحان الله وبحمده غُفرت ذنوبه».",
-  "قال ﷺ: «لا تقوم الساعة حتى…» (اختصرها: أكثروا ذكر الله).",
-  "قال ﷺ: «الدعاء هو العبادة».",
-  "قال ﷺ: «من لم يشكر الناس لم يشكر الله».",
-  "قال ﷺ: «ازهد في الدنيا يحبك الله».",
-  "قال ﷺ: «وازهد فيما عند الناس يحبك الناس».",
-  "قال ﷺ: «نعمتان مغبون فيهما كثير من الناس: الصحة والفراغ».",
-  "قال ﷺ: «ألا أدلكم على ما يمحو الله به الخطايا…؟ إسباغ الوضوء».",
-  "قال ﷺ: «من توضأ ثم قال أشهد أن لا إله إلا الله… فتحت له أبواب الجنة».",
-  "قال ﷺ: «من توضأ ثم صلى ركعتين لا يحدث فيهما نفسه غفر له».",
-  "قال ﷺ: «إذا أحب الله عبدًا نادى جبريل…».",
-  "قال ﷺ: «سددوا وقاربوا وأبشروا».",
-  "قال ﷺ: «لن يدخل أحدكم الجنة بعمله» (بل برحمة الله).",
-  "قال ﷺ: «يسروا وبشروا».",
-  "قال ﷺ: «إن الله لا يمل حتى تملوا».",
-  "قال ﷺ: «إن الله يغار».",
-  "قال ﷺ: «خيركم خيركم لأهله».",
-  "قال ﷺ: «لا يؤمن أحدكم حتى يكون هواه تبعًا لما جئت به».",
-  "قال ﷺ: «الظلم ظلمات يوم القيامة».",
-  "قال ﷺ: «اتقوا دعوة المظلوم».",
-  "قال ﷺ: «دعوة المظلوم ليس بينها وبين الله حجاب».",
-  "قال ﷺ: «من كان يؤمن بالله واليوم الآخر فليكرم ضيفه».",
-  "قال ﷺ: «لا تحقرن من المعروف شيئًا».",
-  "قال ﷺ: «ولو أن تلقى أخاك بوجه طلق».",
-  "قال ﷺ: «أفضل الذكر لا إله إلا الله».",
-  "قال ﷺ: «وأفضل الدعاء الحمد لله».",
-  "قال ﷺ: «من لزم الاستغفار جعل الله له من كل هم فرجًا».",
-  "قال ﷺ: «ومن كل ضيق مخرجًا».",
-  "قال ﷺ: «ومن كل بلاء عافية».",
-  "قال ﷺ: «إن الله لا يقبض العلم انتزاعًا».",
-  "قال ﷺ: «ولكن يقبض العلم بقبض العلماء».",
-  "قال ﷺ: «من يرد الله به خيرًا يفقهه في الدين».",
-  "قال ﷺ: «إن من البيان لسحرًا» (أي قوة الكلمة).",
-  "قال ﷺ: «المؤمن مرآة المؤمن».",
-  "قال ﷺ: «المؤمن يألف ويؤلف».",
-  "قال ﷺ: «لا خير فيمن لا يألف ولا يؤلف».",
-  "قال ﷺ: «أقيلوا ذوي الهيئات عثراتهم».",
-  "قال ﷺ: «من توكل على الله فهو حسبه» (معنى الحديث)."
-];
-  
-
-
-    let idx = 0;
-    let timer = null;
-    let shuffleSeed = 0;
-
+    // utils
     const pad = (n)=> String(n).padStart(2,"0");
-
-    // ✅ عرض 12 ساعة (واجهة فقط)
     function to12h(hhmm24){
       const [H,M] = hhmm24.split(":").map(Number);
       const suffix = (H >= 12) ? "م" : "ص";
       let h = H % 12; if (h === 0) h = 12;
       return `${h}:${pad(M)} ${suffix}`;
     }
-
-    // ✅ تحويل جدولك داخلياً إلى 24h للحساب فقط
-    // لأن العصر/المغرب/العشاء عندك مكتوبة بصيغة 12 بدون AM/PM
-    function normalizePrayerTime(key, hhmm){
-      let [H, M] = hhmm.split(":").map(Number);
-
-      // العصر/المغرب/العشاء لازم PM
-      if (key === "asr" || key === "maghrib" || key === "isha"){
-        if (H < 12) H += 12;
-      }
-      // الفجر/الشروق غالباً AM نخليها مثل ما هي
-      // الظهر 12:xx يبقى طبيعي
-
-      return `${String(H).padStart(2,"0")}:${String(M).padStart(2,"0")}`;
-    }
-
-    function todayAt24(hhmm24){
-      const [H,M] = hhmm24.split(":").map(Number);
-      const d = new Date();
-      d.setHours(H,M,0,0);
+    function timeToDate(baseDate, hhmm24){
+      const [hh, mm] = hhmm24.split(":").map(Number);
+      const d = new Date(baseDate);
+      d.setHours(hh, mm, 0, 0);
       return d;
     }
-
-    // ✅ نحدد يوم رمضان الحالي بمقارنة يوم/شهر بالأرقام (بدون اعتماد على اللغة)
-    function parseArabicMonthToNumber(monthName){
-      const m = (monthName || "").trim();
-      const map = {
-        "يناير":1, "كانون الثاني":1,
-        "فبراير":2, "شباط":2,
-        "مارس":3, "آذار":3, "اذار":3,
-        "أبريل":4, "نيسان":4, "ابريل":4,
-        "مايو":5, "أيار":5, "ايار":5,
-        "يونيو":6, "حزيران":6,
-        "يوليو":7, "تموز":7,
-        "أغسطس":8, "آب":8, "اغسطس":8, "اب":8,
-        "سبتمبر":9, "أيلول":9, "ايلول":9,
-        "أكتوبر":10, "تشرين الأول":10, "اكتوبر":10,
-        "نوفمبر":11, "تشرين الثاني":11,
-        "ديسمبر":12, "كانون الأول":12
-      };
-      return map[m] || null;
+    function ramadanBaseDate(){
+      return new Date(2026, 1, 18, 0, 0, 0, 0);
     }
-    function parseDayMonth(str){
-      const s = String(str).replace(/[•،,]/g, " ").trim();
-      const parts = s.split(/\s+/);
-      const day = parseInt(parts[0], 10);
-      const monthName = parts.slice(1).join(" ");
-      const month = parseArabicMonthToNumber(monthName);
-      if(!day || !month) return null;
-      return { day, month };
-    }
-    function findClosestIndexForToday(){
+    function indexForToday(){
+      const base = ramadanBaseDate();
       const now = new Date();
-      const today = { day: now.getDate(), month: now.getMonth() + 1 };
-
-      const found = data.findIndex(x => {
-        const dm = parseDayMonth(x.g);
-        return dm && dm.day === today.day && dm.month === today.month;
-      });
-
-      return found >= 0 ? found : 0;
+      const today0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const base0 = new Date(base.getFullYear(), base.getMonth(), base.getDate());
+      const diffDays = Math.floor((today0 - base0) / 86400000);
+      return Math.max(0, Math.min(data.length - 1, diffDays));
+    }
+    function sameDay(a,b){
+      return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
     }
 
-    function animateSwap(cardEl, newTextEl, newText){
-      cardEl.style.opacity = 0;
-      cardEl.style.transform = "translateY(-6px)";
-      setTimeout(()=>{
-        newTextEl.textContent = newText;
-        cardEl.style.opacity = 1;
-        cardEl.style.transform = "translateY(0)";
-      }, 170);
-    }
-
-    // date swap
-    let showHijri = true;
+    // state
+    let idx = 0;
+    let timer = null;
+    let swapTimer = null;
     let dateTimer = null;
-    function updateDateSwap(){
-      const d = data[idx];
-      const el = $("dateSwap");
-      el.classList.remove("in");
-      el.classList.add("out");
+    let swapFlip = false;
+
+    function animateSwap(cardEl, textEl, newText){
+      cardEl.classList.add("out");
       setTimeout(()=>{
-        el.textContent = showHijri ? `هجري: ${d.h}` : `ميلادي: ${d.g}`;
-        el.classList.remove("out");
-        el.classList.add("in");
-        showHijri = !showHijri;
+        textEl.textContent = newText;
+        cardEl.classList.remove("out");
+        cardEl.classList.add("flash");
+        setTimeout(()=> cardEl.classList.remove("flash"), 900);
       }, 220);
     }
-    function startDateAuto(){
-      if(dateTimer) clearInterval(dateTimer);
-      updateDateSwap();
-      dateTimer = setInterval(updateDateSwap, 3200);
+
+    function buildPrayerCards(d){
+      const wrap = $("prayersWrap");
+      wrap.innerHTML = "";
+      prayers.forEach((p)=>{
+        const col = document.createElement("div");
+        col.className = "col-12 col-sm-6 col-lg-4";
+
+        const card = document.createElement("div");
+        card.className = "prayer-card d-flex align-items-center justify-content-between gap-2";
+        card.id = "row-" + p.key;
+
+        const left = document.createElement("div");
+        left.className = "d-flex align-items-center gap-2";
+
+        const ic = document.createElement("div");
+        ic.className = "ic";
+        ic.innerHTML = `<i class="mdi ${p.icon}"></i>`;
+
+        const txt = document.createElement("div");
+        txt.innerHTML = `<div class="pname">${p.name}</div><div class="small muted">بتوقيت مدينة بعقوبة</div>`;
+
+        left.appendChild(ic);
+        left.appendChild(txt);
+
+        const right = document.createElement("div");
+        right.className = "ptime";
+        right.textContent = to12h(d[p.key]);
+
+        card.appendChild(left);
+        card.appendChild(right);
+
+        col.appendChild(card);
+        wrap.appendChild(col);
+      });
     }
 
-    function setIndex(i){
-      idx = Math.max(0, Math.min(data.length-1, i));
-      render();
+    function computeNextPrayerForToday(d, dayDate){
+      const now = new Date();
+      const events = prayers.map(p => ({
+        ...p,
+        t24: d[p.key],
+        dt: timeToDate(dayDate, d[p.key])
+      }));
+      const upcoming = events.find(e => e.dt > now);
+      if (upcoming) return { ...upcoming, isTomorrow:false };
+
+      const nextDay = data[idx + 1];
+      if (nextDay){
+        const tomorrowDate = new Date(dayDate);
+        tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+        return {
+          ...prayers[0],
+          t24: nextDay.fajr,
+          dt: timeToDate(tomorrowDate, nextDay.fajr),
+          isTomorrow:true
+        };
+      }
+      return null;
+    }
+
+    function setActiveCard(nextKey){
+      prayers.forEach(p => $("row-"+p.key)?.classList.remove("active"));
+      $("row-"+nextKey)?.classList.add("active");
+    }
+
+    function setAttentionByMinutes(mins){
+      const root = $("attnRoot");
+      const badge = $("nextBadge");
+      root.classList.remove("attn-calm","attn-near","attn-soon","attn-urgent");
+      badge.classList.remove("near","soon","urgent");
+
+      let cls = "attn-calm";
+      if (mins <= 5) cls = "attn-urgent";
+      else if (mins <= 20) cls = "attn-soon";
+      else if (mins <= 60) cls = "attn-near";
+
+      root.classList.add(cls);
+
+      if (cls === "attn-near") badge.classList.add("near");
+      if (cls === "attn-soon") badge.classList.add("soon");
+      if (cls === "attn-urgent") badge.classList.add("urgent");
     }
 
     function render(){
       const d = data[idx];
-      $("dayLine").textContent  = `${d.dow} • ${d.h}`;
+      const base = ramadanBaseDate();
+      const dayDate = new Date(base);
+      dayDate.setDate(base.getDate() + idx);
 
-      showHijri = true;
-      startDateAuto();
+      $("dayLine").textContent = `${d.dow} — ${d.h}`;
+      $("dateSwap").textContent = swapFlip ? `الميلادي: ${d.g}` : `الهجري: ${d.h}`;
 
-      const dua = duas[(idx + shuffleSeed) % duas.length];
-      const had = ahadith[(idx + shuffleSeed) % ahadith.length];
-      animateSwap($("duaCard"), $("duaText"), dua);
-      animateSwap($("hadithCard"), $("hadithText"), had);
+      buildPrayerCards(d);
 
-      const wrap = $("prayersWrap");
-      wrap.innerHTML = prayers.map((p, i) => {
-        const t24 = normalizePrayerTime(p.key, d[p.key]);     // ✅ داخلي 24
-        const t12 = to12h(t24);                                // ✅ عرض 12
-        return `
-          <div class="col-12">
-            <div class="prayer-card d-flex align-items-center justify-content-between stagger-in" style="animation-delay:${i*60}ms" id="row-${p.key}">
-              <div class="d-flex align-items-center gap-2">
-                <div class="ic"><i class="mdi ${p.icon}"></i></div>
-                <div class="text-start">
-                  <div class="pname">${p.name}</div>
-                  <div class="small muted">بتوقيت مدينة بعقوبة</div>
-                </div>
-              </div>
-              <div class="text-start">
-                <div class="ptime">${t12}</div>
-                <div class="small muted">${t24} (24h)</div>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join("");
-
-      updateNextCountdown();
-    }
-
-    function updateNextCountdown(){
-      prayers.forEach(p => $("row-"+p.key)?.classList.remove("active"));
-
-      const d = data[idx];
-      const now = new Date();
-
-      const todayIdx = findClosestIndexForToday();
-      const isToday = (idx === todayIdx);
-
-      // ✅ schedule كله مبني على 24h داخلي
-      const schedule = prayers.map(p => {
-        const t24 = normalizePrayerTime(p.key, d[p.key]);
-        return {
-          key: p.key,
-          name: p.name,
-          hhmm24: t24,
-          dt: isToday ? todayAt24(t24) : null
-        };
-      });
+      const isToday = sameDay(new Date(), dayDate);
 
       let next = null;
-
       if (isToday){
-        next = schedule.find(x => x.dt > now);
-
-        // إذا خلصت كل الصلوات → فجر باچر (مبني على 24h)
-        if (!next){
-          const tmr = new Date();
-          tmr.setDate(tmr.getDate()+1);
-          const fajr24 = normalizePrayerTime("fajr", d.fajr);
-          const [H,M] = fajr24.split(":").map(Number);
-          tmr.setHours(H,M,0,0);
-          next = { key:"fajr", name:"الفجر", hhmm24: fajr24, dt: tmr };
-        }
+        next = computeNextPrayerForToday(d, dayDate);
       } else {
-        // إذا المستخدم مستعرض يوم غير اليوم: نخليها فجر هذا اليوم (بدون عدّاد)
-        const fajr24 = normalizePrayerTime("fajr", d.fajr);
-        next = { key:"fajr", name:"الفجر", hhmm24: fajr24, dt: null };
+        next = { ...prayers[0], t24: d[prayers[0].key], dt: null, isTomorrow:false };
       }
 
-      $("row-"+next.key)?.classList.add("active");
+      if (!next){
+        $("nextShort").textContent = "—";
+        $("nextBadge").querySelector("span").textContent = "—";
+        $("countdown").textContent = "— — —";
+        setAttentionByMinutes(9999);
+        return;
+      }
+
       $("nextShort").textContent = next.name;
 
-      // ✅ badge يعرض 12 ساعة بس يعتمد 24 داخلي
+      // ✅ فقط اسم الصلاة + وقتها (بدون باقي)
       $("nextBadge").querySelector("span").textContent =
-        `${next.name} • ${to12h(next.hhmm24)}`;
+        `${next.name} — ${to12h(next.t24)}${next.isTomorrow ? " (غداً)" : ""}`;
+
+      if (isToday){
+        setActiveCard(next.key);
+      } else {
+        setActiveCard(prayers[0].key);
+      }
 
       if (timer) clearInterval(timer);
 
       function tick(){
         if (!isToday || !next.dt){
           $("countdown").textContent = "— — —";
+          setAttentionByMinutes(9999);
           return;
         }
+
         const diff = next.dt - new Date();
         if (diff <= 0){
           render();
           return;
         }
+
         const h = Math.floor(diff/3600000);
         const m = Math.floor((diff%3600000)/60000);
         const s = Math.floor((diff%60000)/1000);
         $("countdown").textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+
+        setAttentionByMinutes(Math.floor(diff/60000));
       }
 
       tick();
       timer = setInterval(tick, 1000);
     }
 
-    // Events
+    function setIndex(newIdx){
+      idx = Math.max(0, Math.min(data.length-1, newIdx));
+      render();
+
+      // seed dua/hadith by day
+      $("duaText").textContent = duas[idx % duas.length];
+      $("hadithText").textContent = ahadith[idx % ahadith.length];
+    }
+
+    function goToday(){
+      setIndex(indexForToday());
+    }
+
     $("btnPrev").addEventListener("click", ()=> setIndex(idx-1));
     $("btnNext").addEventListener("click", ()=> setIndex(idx+1));
+
     $("btnShuffle").addEventListener("click", ()=>{
-      shuffleSeed = (shuffleSeed + 1) % 999999;
-      const d = data[idx];
-      animateSwap($("duaCard"), $("duaText"), duas[(idx + shuffleSeed) % duas.length]);
-      animateSwap($("hadithCard"), $("hadithText"), ahadith[(idx + shuffleSeed) % ahadith.length]);
+      const seed = Math.floor(Date.now()/1000);
+      animateSwap($("duaCard"), $("duaText"), duas[(idx + seed) % duas.length]);
+      animateSwap($("hadithCard"), $("hadithText"), ahadith[(idx + seed*2) % ahadith.length]);
     });
 
+    function startAutoSwap(){
+      if (swapTimer) clearInterval(swapTimer);
+      swapTimer = setInterval(()=>{
+        const t = Math.floor(Date.now()/1000);
+        animateSwap($("duaCard"), $("duaText"), duas[(idx + t) % duas.length]);
+        animateSwap($("hadithCard"), $("hadithText"), ahadith[(idx + t*2) % ahadith.length]);
+      }, 7000);
+    }
+
+    function startDateSwap(){
+      if (dateTimer) clearInterval(dateTimer);
+      dateTimer = setInterval(()=>{
+        const el = $("dateSwap");
+        el.classList.add("out");
+        setTimeout(()=>{
+          swapFlip = !swapFlip;
+          el.textContent = swapFlip ? `الميلادي: ${data[idx].g}` : `الهجري: ${data[idx].h}`;
+          el.classList.remove("out");
+          el.classList.add("in");
+        }, 220);
+      }, 3200);
+    }
+
+    // Always open today on return
+    document.addEventListener("visibilitychange", ()=>{
+      if (!document.hidden) goToday();
+    });
+    window.addEventListener("pageshow", goToday);
+
     // Init
-    setIndex(findClosestIndexForToday());
+    goToday();
+    startAutoSwap();
+    startDateSwap();
   </script>
 </body>
 </html>
