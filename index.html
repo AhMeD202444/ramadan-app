@@ -421,6 +421,230 @@
       .icon-btn{ width: 38px; height: 38px; }
       .logoBox{ width: 38px; height: 38px; }
     }
+    
+
+/* ===== PRINT: One Page ULTRA Premium (A4) ===== */
+.print-sheet{ display:none; }
+
+@media print{
+  @page{ size: A4 portrait; margin: 10mm; }
+
+  body{
+    background:#fff !important;
+    color:#111 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* اخفاء كل شي واظهار الطباعة فقط */
+  body *{ visibility:hidden !important; }
+  #printSheet, #printSheet *{ visibility:visible !important; }
+
+  .topbar, footer.fixed-footer{ display:none !important; }
+
+  #printSheet{
+    display:block !important;
+    position:absolute;
+    inset:0;
+  }
+
+  /* Card wrapper */
+  .print-card{
+    border: 1px solid #e9e9f3;
+    border-radius: 16px;
+    padding: 10px 10px 8px;
+    background:
+      radial-gradient(900px 300px at 18% -10%, rgba(124,92,255,.10), transparent 60%),
+      radial-gradient(900px 300px at 95% 0%, rgba(255,193,77,.10), transparent 62%),
+      #fff;
+    box-shadow: 0 12px 26px rgba(0,0,0,.06);
+  }
+
+  /* ===== Header (More premium) ===== */
+  .phead{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap: 12px;
+    padding: 10px 12px 12px;
+    border: 1px solid #ededf6;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #fbfbff, #ffffff);
+    margin-bottom: 8px;
+    position:relative;
+    overflow:hidden;
+  }
+  .phead::after{
+    content:"";
+    position:absolute;
+    left: 12px; right: 12px; bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(124,92,255,.22), rgba(255,193,77,.22), transparent);
+    opacity:.9;
+  }
+
+  .pbrand{ display:flex; align-items:flex-start; gap: 10px; }
+  .pmark{ display:flex; gap:6px; padding-top: 4px; }
+  .pmark span{
+    width:8px; height:8px; border-radius:999px;
+    background:#111; opacity:.16;
+  }
+
+  .ptitle{
+    font-size: 16.4px;
+    font-weight: 1000;
+    letter-spacing:.2px;
+  }
+  .psub{
+    font-size: 10px;
+    color:#555;
+    font-weight: 900;
+    margin-top: 2px;
+  }
+
+  .pmeta{
+    text-align:left;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap: 6px;
+  }
+  .pchip{
+    font-size: 9.6px;
+    font-weight: 1000;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid #e8e8f2;
+    background: #fff;
+    box-shadow: 0 10px 16px rgba(0,0,0,.04);
+  }
+  .pstamp{
+    font-size: 9.2px;
+    color:#666;
+    font-weight: 900;
+  }
+
+  /* ===== Table wrapper ===== */
+  .ptable-wrap{
+    border: 1px solid #ededf6;
+    border-radius: 14px;
+    overflow:hidden;
+    box-shadow: 0 12px 22px rgba(0,0,0,.05);
+  }
+
+  /* Table */
+  .ptable{
+    width:100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    font-size: 9.6px; /* شوي اكبر بس بعده صفحة وحدة */
+  }
+
+  .ptable thead th{
+    background: linear-gradient(180deg, #f7f7ff, #f2f2fb);
+    border-bottom: 1px solid #e7e7f2;
+    padding: 6px 4px;
+    text-align:center;
+    font-weight: 1000;
+    white-space:nowrap;
+    color:#222;
+  }
+
+  /* فواصل عمودية ناعمة */
+  .ptable thead th + th{ border-right: 1px solid #ececf6; }
+  .ptable tbody td + td{ border-right: 1px solid #f0f0f7; }
+
+  .ptable tbody td{
+    border-bottom: 1px solid #f1f1f7;
+    padding: 5px 4px;
+    text-align:center;
+    font-weight: 900;
+    white-space:nowrap;
+    color:#1b1b1b;
+  }
+
+  /* Zebra أنعم */
+  .ptable tbody tr:nth-child(even){ background:#fbfbff; }
+  .ptable tbody tr:nth-child(odd){ background:#ffffff; }
+
+  /* عمود اليوم يكون أوضح */
+  .c-day{
+    width: 13.5%;
+    text-align:right !important;
+    padding-right: 7px !important;
+    font-weight: 1000 !important;
+    color:#111 !important;
+  }
+  /* التاريخين (هجري/ميلادي) بنفس الستايل */
+  .c-h, .c-g{
+    width: 10.5%;
+    font-weight: 1000 !important;
+    color:#222 !important;
+  }
+
+  /* فاصل أجمل بعد العمود الثالث */
+  .ptable thead th:nth-child(3),
+  .ptable tbody td:nth-child(3){
+    border-right: 2px solid #ececf6 !important;
+  }
+
+  /* ===== Footer ===== */
+  .pfoot{
+    margin-top: 8px;
+    padding: 8px 12px;
+    border: 1px solid #ededf6;
+    border-radius: 14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size: 9.6px;
+    color:#555;
+    font-weight: 1000;
+    background: linear-gradient(180deg, #ffffff, #fbfbff);
+    box-shadow: 0 10px 18px rgba(0,0,0,.04);
+  }
+
+  /* ===== ✅ HIGHLIGHTS: Last 10 + Qadr Nights =====
+     تحتاج تضيف class="last10" و class="qadr" على <tr> بالـJS
+  */
+
+  /* العشرة الاواخر (21-30) */
+  .ptable tbody tr.last10{
+    background: linear-gradient(90deg, rgba(124,92,255,.07), rgba(255,193,77,.05)) !important;
+  }
+
+  /* ليالي الوتر (21,23,25,27,29) */
+  .ptable tbody tr.qadr{
+    background: linear-gradient(90deg, rgba(255,193,77,.14), rgba(124,92,255,.10)) !important;
+    outline: 1px solid rgba(255,193,77,.28);
+    outline-offset: -1px;
+  }
+
+  /* بادج "ليلة وتر" داخل عمود اليوم */
+  .ptable tbody tr.qadr td.c-day{
+    position: relative;
+    padding-right: 54px !important;
+  }
+  .ptable tbody tr.qadr td.c-day::after{
+    content:"ليلة وتر";
+    position:absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 6px;
+    font-size: 9px;
+    font-weight: 1000;
+    color:#6a4b13;
+    background: rgba(255,193,77,.22);
+    border: 1px solid rgba(255,193,77,.35);
+    padding: 2px 6px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .print-card, .ptable-wrap, .ptable{ break-inside: avoid; }
+  tr{ break-inside: avoid; }
+}
   </style>
 </head>
 
@@ -437,10 +661,16 @@
           <span>امساكية رمضان</span>
         </div>
 
-        <div class="d-flex gap-2">
-          <button class="icon-btn ripple" id="btnPrev" title="يوم قبل"><i class="mdi mdi-chevron-right"></i></button>
-          <button class="icon-btn ripple" id="btnNext" title="يوم بعد"><i class="mdi mdi-chevron-left"></i></button>
-        </div>
+     <div class="d-flex gap-2">
+  <button class="icon-btn ripple" id="btnPrev" title="يوم قبل"><i class="mdi mdi-chevron-right"></i></button>
+
+  <!-- ✅ زر الطباعة -->
+  <button class="icon-btn ripple" id="btnPrint" title="طباعة الامساكية">
+    <i class="mdi mdi-printer-outline"></i>
+  </button>
+
+  <button class="icon-btn ripple" id="btnNext" title="يوم بعد"><i class="mdi mdi-chevron-left"></i></button>
+</div>
       </div>
     </div>
   </div>
@@ -532,6 +762,56 @@
 
       </div>
     </div>
+    
+    
+    <!-- ===== PRINT SHEET (Hidden on screen, shown in print) ===== -->
+<section id="printSheet" class="print-sheet" aria-hidden="true">
+  <div class="print-card">
+    <header class="phead">
+      <div class="pbrand">
+        <div class="pmark" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="ptitles">
+          <div class="ptitle">امساكية شهر رمضان 2026</div>
+          <div class="psub">بعقوبة — مواقيت الصلاة اليومية (صيغة 12 ساعة)</div>
+        </div>
+      </div>
+
+      <div class="pmeta">
+        <div class="pchip">Ramadan Timetable</div>
+        <div class="pstamp" id="printMeta">—</div>
+      </div>
+    </header>
+
+    <div class="ptable-wrap">
+      <table class="ptable">
+        <thead>
+          <tr>
+            <th class="c-day">اليوم</th>
+            <th class="c-h">هجري</th>
+            <th class="c-g">ميلادي</th>
+            <th>الفجر</th>
+            <th>الشروق</th>
+            <th>الظهر</th>
+            <th>العصر</th>
+            <th>المغرب</th>
+            <th>العشاء</th>
+          </tr>
+        </thead>
+        <tbody id="printTbody"></tbody>
+      </table>
+    </div>
+
+    <footer class="pfoot">
+      <div class="pf-left">جميع الحقوق محفوظة © احمد البياتي</div>
+      <div class="pf-right">نسخة منسّقة — صفحة واحدة</div>
+    </footer>
+  </div>
+</section>
+    
+    
+    
   </main>
 
   <footer class="fixed-footer">
@@ -579,38 +859,38 @@
     })();
 
     // ===== Data (بعقوبة رمضان 2026) =====
-    const data = [
-      {n:1,  dow:"الأربعاء", h:"1 رمضان",  g:"18 فبراير", fajr:"05:20", sunrise:"06:42", dhuhr:"12:21", asr:"15:28", maghrib:"17:53", isha:"19:08"},
-      {n:2,  dow:"الخميس",   h:"2 رمضان",  g:"19 فبراير", fajr:"05:19", sunrise:"06:41", dhuhr:"12:21", asr:"15:29", maghrib:"17:54", isha:"19:09"},
-      {n:3,  dow:"الجمعة",   h:"3 رمضان",  g:"20 فبراير", fajr:"05:18", sunrise:"06:40", dhuhr:"12:21", asr:"15:29", maghrib:"17:55", isha:"19:10"},
-      {n:4,  dow:"السبت",    h:"4 رمضان",  g:"21 فبراير", fajr:"05:17", sunrise:"06:39", dhuhr:"12:21", asr:"15:30", maghrib:"17:55", isha:"19:11"},
-      {n:5,  dow:"الأحد",    h:"5 رمضان",  g:"22 فبراير", fajr:"05:16", sunrise:"06:38", dhuhr:"12:21", asr:"15:30", maghrib:"17:56", isha:"19:11"},
-      {n:6,  dow:"الإثنين",  h:"6 رمضان",  g:"23 فبراير", fajr:"05:15", sunrise:"06:37", dhuhr:"12:21", asr:"15:31", maghrib:"17:57", isha:"19:12"},
-      {n:7,  dow:"الثلاثاء", h:"7 رمضان",  g:"24 فبراير", fajr:"05:14", sunrise:"06:36", dhuhr:"12:21", asr:"15:31", maghrib:"17:58", isha:"19:13"},
-      {n:8,  dow:"الأربعاء", h:"8 رمضان",  g:"25 فبراير", fajr:"05:13", sunrise:"06:35", dhuhr:"12:20", asr:"15:32", maghrib:"17:59", isha:"19:14"},
-      {n:9,  dow:"الخميس",   h:"9 رمضان",  g:"26 فبراير", fajr:"05:12", sunrise:"06:33", dhuhr:"12:20", asr:"15:32", maghrib:"18:00", isha:"19:15"},
-      {n:10, dow:"الجمعة",   h:"10 رمضان", g:"27 فبراير", fajr:"05:11", sunrise:"06:32", dhuhr:"12:20", asr:"15:33", maghrib:"18:00", isha:"19:15"},
-      {n:11, dow:"السبت",    h:"11 رمضان", g:"28 فبراير", fajr:"05:09", sunrise:"06:31", dhuhr:"12:20", asr:"15:33", maghrib:"18:01", isha:"19:16"},
-      {n:12, dow:"الأحد",    h:"12 رمضان", g:"1 مارس",   fajr:"05:08", sunrise:"06:30", dhuhr:"12:20", asr:"15:34", maghrib:"18:02", isha:"19:17"},
-      {n:13, dow:"الإثنين",  h:"13 رمضان", g:"2 مارس",   fajr:"05:07", sunrise:"06:29", dhuhr:"12:20", asr:"15:34", maghrib:"18:03", isha:"19:18"},
-      {n:14, dow:"الثلاثاء", h:"14 رمضان", g:"3 مارس",   fajr:"05:06", sunrise:"06:27", dhuhr:"12:19", asr:"15:35", maghrib:"18:04", isha:"19:18"},
-      {n:15, dow:"الأربعاء", h:"15 رمضان", g:"4 مارس",   fajr:"05:05", sunrise:"06:26", dhuhr:"12:19", asr:"15:35", maghrib:"18:05", isha:"19:19"},
-      {n:16, dow:"الخميس",   h:"16 رمضان", g:"5 مارس",   fajr:"05:03", sunrise:"06:25", dhuhr:"12:19", asr:"15:36", maghrib:"18:05", isha:"19:20"},
-      {n:17, dow:"الجمعة",   h:"17 رمضان", g:"6 مارس",   fajr:"05:02", sunrise:"06:24", dhuhr:"12:19", asr:"15:36", maghrib:"18:06", isha:"19:21"},
-      {n:18, dow:"السبت",    h:"18 رمضان", g:"7 مارس",   fajr:"05:01", sunrise:"06:22", dhuhr:"12:18", asr:"15:36", maghrib:"18:07", isha:"19:22"},
-      {n:19, dow:"الأحد",    h:"19 رمضان", g:"8 مارس",   fajr:"05:00", sunrise:"06:21", dhuhr:"12:18", asr:"15:37", maghrib:"18:08", isha:"19:22"},
-      {n:20, dow:"الإثنين",  h:"20 رمضان", g:"9 مارس",   fajr:"04:58", sunrise:"06:20", dhuhr:"12:18", asr:"15:37", maghrib:"18:09", isha:"19:23"},
-      {n:21, dow:"الثلاثاء", h:"21 رمضان", g:"10 مارس",  fajr:"04:57", sunrise:"06:19", dhuhr:"12:18", asr:"15:37", maghrib:"18:09", isha:"19:24"},
-      {n:22, dow:"الأربعاء", h:"22 رمضان", g:"11 مارس",  fajr:"04:56", sunrise:"06:17", dhuhr:"12:17", asr:"15:38", maghrib:"18:10", isha:"19:25"},
-      {n:23, dow:"الخميس",   h:"23 رمضان", g:"12 مارس",  fajr:"04:54", sunrise:"06:16", dhuhr:"12:17", asr:"15:38", maghrib:"18:11", isha:"19:26"},
-      {n:24, dow:"الجمعة",   h:"24 رمضان", g:"13 مارس",  fajr:"04:53", sunrise:"06:15", dhuhr:"12:17", asr:"15:38", maghrib:"18:12", isha:"19:26"},
-      {n:25, dow:"السبت",    h:"25 رمضان", g:"14 مارس",  fajr:"04:52", sunrise:"06:13", dhuhr:"12:17", asr:"15:39", maghrib:"18:12", isha:"19:27"},
-      {n:26, dow:"الأحد",    h:"26 رمضان", g:"15 مارس",  fajr:"04:50", sunrise:"06:12", dhuhr:"12:16", asr:"15:39", maghrib:"18:13", isha:"19:28"},
-      {n:27, dow:"الإثنين",  h:"27 رمضان", g:"16 مارس",  fajr:"04:49", sunrise:"06:11", dhuhr:"12:16", asr:"15:39", maghrib:"18:14", isha:"19:29"},
-      {n:28, dow:"الثلاثاء", h:"28 رمضان", g:"17 مارس",  fajr:"04:48", sunrise:"06:09", dhuhr:"12:16", asr:"15:40", maghrib:"18:15", isha:"19:30"},
-      {n:29, dow:"الأربعاء", h:"29 رمضان", g:"18 مارس",  fajr:"04:46", sunrise:"06:08", dhuhr:"12:15", asr:"15:40", maghrib:"18:15", isha:"19:30"},
-      {n:30, dow:"الخميس",   h:"30 رمضان", g:"19 مارس",  fajr:"04:45", sunrise:"06:07", dhuhr:"12:15", asr:"15:40", maghrib:"18:16", isha:"19:31"},
-    ];
+  const data = [
+  {n:1,  dow:"الأربعاء", h:"1 رمضان",  g:"18 فبراير", fajr:"05:20", sunrise:"06:43", dhuhr:"12:20", asr:"15:26", maghrib:"17:52", isha:"19:08"},
+  {n:2,  dow:"الخميس",   h:"2 رمضان",  g:"19 فبراير", fajr:"05:19", sunrise:"06:42", dhuhr:"12:20", asr:"15:26", maghrib:"17:53", isha:"19:08"},
+  {n:3,  dow:"الجمعة",   h:"3 رمضان",  g:"20 فبراير", fajr:"05:18", sunrise:"06:41", dhuhr:"12:20", asr:"15:27", maghrib:"17:54", isha:"19:09"},
+  {n:4,  dow:"السبت",    h:"4 رمضان",  g:"21 فبراير", fajr:"05:17", sunrise:"06:40", dhuhr:"12:20", asr:"15:27", maghrib:"17:55", isha:"19:10"},
+  {n:5,  dow:"الأحد",    h:"5 رمضان",  g:"22 فبراير", fajr:"05:16", sunrise:"06:39", dhuhr:"12:19", asr:"15:28", maghrib:"17:55", isha:"19:11"},
+  {n:6,  dow:"الإثنين",  h:"6 رمضان",  g:"23 فبراير", fajr:"05:15", sunrise:"06:38", dhuhr:"12:19", asr:"15:29", maghrib:"17:56", isha:"19:12"},
+  {n:7,  dow:"الثلاثاء", h:"7 رمضان",  g:"24 فبراير", fajr:"05:14", sunrise:"06:37", dhuhr:"12:19", asr:"15:29", maghrib:"17:57", isha:"19:12"},
+  {n:8,  dow:"الأربعاء", h:"8 رمضان",  g:"25 فبراير", fajr:"05:13", sunrise:"06:35", dhuhr:"12:19", asr:"15:30", maghrib:"17:58", isha:"19:13"},
+  {n:9,  dow:"الخميس",   h:"9 رمضان",  g:"26 فبراير", fajr:"05:11", sunrise:"06:34", dhuhr:"12:19", asr:"15:30", maghrib:"17:59", isha:"19:14"},
+  {n:10, dow:"الجمعة",   h:"10 رمضان", g:"27 فبراير", fajr:"05:10", sunrise:"06:33", dhuhr:"12:19", asr:"15:31", maghrib:"18:00", isha:"19:15"},
+  {n:11, dow:"السبت",    h:"11 رمضان", g:"28 فبراير", fajr:"05:09", sunrise:"06:32", dhuhr:"12:19", asr:"15:31", maghrib:"18:01", isha:"19:16"},
+  {n:12, dow:"الأحد",    h:"12 رمضان", g:"1 مارس",   fajr:"05:09", sunrise:"06:32", dhuhr:"12:19", asr:"15:31", maghrib:"18:01", isha:"19:16"},
+  {n:13, dow:"الإثنين",  h:"13 رمضان", g:"2 مارس",   fajr:"05:08", sunrise:"06:31", dhuhr:"12:18", asr:"15:32", maghrib:"18:01", isha:"19:17"},
+  {n:14, dow:"الثلاثاء", h:"14 رمضان", g:"3 مارس",   fajr:"05:07", sunrise:"06:29", dhuhr:"12:18", asr:"15:32", maghrib:"18:02", isha:"19:17"},
+  {n:15, dow:"الأربعاء", h:"15 رمضان", g:"4 مارس",   fajr:"05:06", sunrise:"06:28", dhuhr:"12:18", asr:"15:33", maghrib:"18:03", isha:"19:18"},
+  {n:16, dow:"الخميس",   h:"16 رمضان", g:"5 مارس",   fajr:"05:04", sunrise:"06:27", dhuhr:"12:18", asr:"15:33", maghrib:"18:04", isha:"19:19"},
+  {n:17, dow:"الجمعة",   h:"17 رمضان", g:"6 مارس",   fajr:"05:03", sunrise:"06:26", dhuhr:"12:17", asr:"15:34", maghrib:"18:05", isha:"19:20"},
+  {n:18, dow:"السبت",    h:"18 رمضان", g:"7 مارس",   fajr:"05:02", sunrise:"06:24", dhuhr:"12:17", asr:"15:34", maghrib:"18:06", isha:"19:21"},
+  {n:19, dow:"الأحد",    h:"19 رمضان", g:"8 مارس",   fajr:"05:00", sunrise:"06:23", dhuhr:"12:17", asr:"15:34", maghrib:"18:06", isha:"19:21"},
+  {n:20, dow:"الإثنين",  h:"20 رمضان", g:"9 مارس",   fajr:"04:59", sunrise:"06:22", dhuhr:"12:17", asr:"15:35", maghrib:"18:07", isha:"19:22"},
+  {n:21, dow:"الثلاثاء", h:"21 رمضان", g:"10 مارس",  fajr:"04:58", sunrise:"06:21", dhuhr:"12:17", asr:"15:35", maghrib:"18:08", isha:"19:23"},
+  {n:22, dow:"الأربعاء", h:"22 رمضان", g:"11 مارس",  fajr:"04:57", sunrise:"06:19", dhuhr:"12:16", asr:"15:36", maghrib:"18:09", isha:"19:24"},
+  {n:23, dow:"الخميس",   h:"23 رمضان", g:"12 مارس",  fajr:"04:55", sunrise:"06:18", dhuhr:"12:16", asr:"15:36", maghrib:"18:10", isha:"19:25"},
+  {n:24, dow:"الجمعة",   h:"24 رمضان", g:"13 مارس",  fajr:"04:54", sunrise:"06:17", dhuhr:"12:16", asr:"15:36", maghrib:"18:10", isha:"19:25"},
+  {n:25, dow:"السبت",    h:"25 رمضان", g:"14 مارس",  fajr:"04:53", sunrise:"06:15", dhuhr:"12:15", asr:"15:37", maghrib:"18:11", isha:"19:26"},
+  {n:26, dow:"الأحد",    h:"26 رمضان", g:"15 مارس",  fajr:"04:51", sunrise:"06:14", dhuhr:"12:15", asr:"15:37", maghrib:"18:12", isha:"19:27"},
+  {n:27, dow:"الإثنين",  h:"27 رمضان", g:"16 مارس",  fajr:"04:50", sunrise:"06:13", dhuhr:"12:15", asr:"15:37", maghrib:"18:13", isha:"19:28"},
+  {n:28, dow:"الثلاثاء", h:"28 رمضان", g:"17 مارس",  fajr:"04:48", sunrise:"06:11", dhuhr:"12:15", asr:"15:38", maghrib:"18:14", isha:"19:29"},
+  {n:29, dow:"الأربعاء", h:"29 رمضان", g:"18 مارس",  fajr:"04:47", sunrise:"06:10", dhuhr:"12:14", asr:"15:38", maghrib:"18:14", isha:"19:29"},
+  {n:30, dow:"الخميس",   h:"30 رمضان", g:"19 مارس",  fajr:"04:46", sunrise:"06:09", dhuhr:"12:14", asr:"15:38", maghrib:"18:15", isha:"19:30"},
+];
 
     const prayers = [
       {key:"fajr",    name:"الفجر",   icon:"mdi-weather-sunset-up"},
@@ -1105,6 +1385,57 @@
       if (!document.hidden) goToday();
     });
     window.addEventListener("pageshow", goToday);
+    
+    
+    // ===== PRINT ADD-ON (12h + One Page) =====
+function to12hPrint(hhmm24){
+  const [H,M] = hhmm24.split(":").map(Number);
+  const suffix = (H >= 12) ? "م" : "ص";
+  let h = H % 12; if (h === 0) h = 12;
+  return `${h}:${String(M).padStart(2,"0")} ${suffix}`;
+}
+
+function buildPrintTable(){
+  const tbody = document.getElementById("printTbody");
+  const meta = document.getElementById("printMeta");
+  if(!tbody || !meta) return;
+
+  tbody.innerHTML = "";
+
+  const now = new Date();
+  const dd = String(now.getDate()).padStart(2,"0");
+  const mm = String(now.getMonth()+1).padStart(2,"0");
+  const yyyy = now.getFullYear();
+  const hh = String(now.getHours()).padStart(2,"0");
+  const mi = String(now.getMinutes()).padStart(2,"0");
+  meta.textContent = `تم إنشاء الطباعة: ${dd}/${mm}/${yyyy} — ${hh}:${mi}`;
+
+  // لازم يكون عندك مصفوفة data[] مثل كودك القديم
+  data.forEach((d)=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="c-day">${d.n} ${d.dow}</td>
+      <td class="c-h">${d.h}</td>
+      <td class="c-g">${d.g}</td>
+      <td>${to12hPrint(d.fajr)}</td>
+      <td>${to12hPrint(d.sunrise)}</td>
+      <td>${to12hPrint(d.dhuhr)}</td>
+      <td>${to12hPrint(d.asr)}</td>
+      <td>${to12hPrint(d.maghrib)}</td>
+      <td>${to12hPrint(d.isha)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", ()=>{
+  const btn = document.getElementById("btnPrint");
+  if(!btn) return;
+  btn.addEventListener("click", ()=>{
+    buildPrintTable();
+    setTimeout(()=> window.print(), 90);
+  });
+});
 
     // Init
     goToday();
