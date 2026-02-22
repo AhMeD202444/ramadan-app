@@ -698,7 +698,7 @@
                 <div class="ring floaty glint-on" id="ring">
                   <div>
                     <div class="glint" aria-hidden="true"></div>
-                    <div class="label">الصلاة الجاية</div>
+                    <div class="label" id="ringLabel">الصلاة الجاية</div>
                     <div class="val" id="nextShort">—</div>
                   </div>
                 </div>
@@ -1245,6 +1245,73 @@
       return null;
     }
 
+    /* ===========================
+       ✅ ADDITIONS (مضت/تصاعدي/مغرب)
+    ============================ */
+
+    // ✅ prev + next (حتى نعرف الصلاة السابقة لو بعد الأذان)
+    function computePrevNextForToday(d, dayDate){
+      const now = new Date();
+
+      const events = prayers.map(p => ({
+        ...p,
+        t24: d[p.key],
+        dt: timeToDate(dayDate, d[p.key])
+      })).sort((a,b)=> a.dt - b.dt);
+
+      let next = events.find(e => e.dt > now) || null;
+
+      let prev = null;
+      for(let i = events.length - 1; i >= 0; i--){
+        if(events[i].dt <= now){ prev = events[i]; break; }
+      }
+
+      if(!next){
+        const nextDay = data[idx + 1];
+        if(nextDay){
+          const tomorrowDate = new Date(dayDate);
+          tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+          next = {
+            ...prayers[0],
+            t24: nextDay.fajr,
+            dt: timeToDate(tomorrowDate, nextDay.fajr),
+            isTomorrow:true
+          };
+        }
+      } else {
+        next.isTomorrow = false;
+      }
+
+      if(!prev){
+        const prevDay = data[idx - 1];
+        if(prevDay){
+          const yDate = new Date(dayDate);
+          yDate.setDate(yDate.getDate() - 1);
+          const ishaDef = prayers.find(p=>p.key==="isha");
+          if(ishaDef){
+            prev = {
+              ...ishaDef,
+              t24: prevDay.isha,
+              dt: timeToDate(yDate, prevDay.isha),
+              isYesterday:true
+            };
+          }
+        }
+      }
+
+      return { prev, next };
+    }
+
+    // ✅ CONFIG
+    const PRE_AZAAN_ALERT_MS   = 60 * 1000;      // قبل الأذان بدقيقة
+    const AFTER_PRAYER_HOLD_MS = 5  * 60 * 1000; // بعد الأذان 5 دقايق (عداد تصاعدي)
+    const MAGHRIB_MSG_MS       = 3  * 60 * 1000; // رسائل المغرب 3 دقايق
+
+    const IFTAR_MESSAGES = [
+      "صياماً مقبولاً",
+      "إفطاراً شهياً"
+    ];
+
     function setActiveCard(nextKey){
       prayers.forEach(p => $("row-"+p.key)?.classList.remove("active"));
       $("row-"+nextKey)?.classList.add("active");
@@ -1311,24 +1378,98 @@
       if (timer) clearInterval(timer);
 
       function tick(){
-        if (!isToday || !next.dt){
+        if (!isToday){
           $("countdown").textContent = "— — —";
           setAttentionByMinutes(9999);
           return;
         }
 
-        const diff = next.dt - new Date();
+        // ✅ نجيب السابق والجاي دائمًا حتى نعرف حالة "مضت"
+        const pn = computePrevNextForToday(d, dayDate);
+        const nx = pn.next;
+        const pv = pn.prev;
+
+        if (!nx || !nx.dt){
+          $("countdown").textContent = "— — —";
+          setAttentionByMinutes(9999);
+          return;
+        }
+
+        const now = new Date();
+        const diff = nx.dt - now; // باقي للصلاة الجاية
+        const sincePrev = pv?.dt ? (now - pv.dt) : null;
+
+        // إذا وصل وقت الصلاة
         if (diff <= 0){
           render();
           return;
         }
 
-        const h = Math.floor(diff/3600000);
-        const m = Math.floor((diff%3600000)/60000);
-        const s = Math.floor((diff%60000)/1000);
-        $("countdown").textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+        // ✅ (1) بعد الأذان 5 دقائق: العداد تصاعدي + البادج "مضت"
+        if (sincePrev !== null && sincePrev >= 0 && sincePrev < AFTER_PRAYER_HOLD_MS){
 
-        setAttentionByMinutes(Math.floor(diff/60000));
+          $("nextBadge").querySelector("span").textContent = `✅ مضى على أذان ${pv.name}`;
+
+          const up = sincePrev;
+          const mm = Math.floor(up / 60000);
+          const ss = Math.floor((up % 60000) / 1000);
+          $("countdown").textContent = `00:${pad(mm)}:${pad(ss)}`;
+
+         // الدائرة: طبيعي تعرض الصلاة الجاية… إلا المغرب يطلع عبارات
+          $("nextShort").textContent = nx.name;
+
+         // ✅ افتراضي: خلي اللابل طبيعي
+         $("ringLabel").textContent = "الصلاة الجاية";
+
+        if (pv.key === "maghrib" && sincePrev < MAGHRIB_MSG_MS){
+        const slot = Math.floor((sincePrev/1000) / 35);
+  $("nextShort").textContent = IFTAR_MESSAGES[slot % IFTAR_MESSAGES.length];
+
+  // ✅ وقت رسائل الإفطار: نخفي "الصلاة الجاية"
+  $("ringLabel").textContent = "";
+}
+
+setActiveCard(nx.key);
+setAttentionByMinutes(9999);
+return;
+        }
+
+       // ✅ (2) قبل الأذان بدقيقة: رسالة داخل الدائرة + العداد يبقى تنازلي
+if (diff > 0 && diff <= PRE_AZAAN_ALERT_MS){
+  // ✅ رجّع اللابل طبيعي
+  $("ringLabel").textContent = "الصلاة الجاية";
+
+  $("nextShort").textContent = `بعد دقيقة`;
+
+  $("nextBadge").querySelector("span").textContent =
+    `${nx.name} — ${to12h(nx.t24)} (بعد دقيقة تقريباً)${nx.isTomorrow ? " (غداً)" : ""}`;
+
+  const h = Math.floor(diff/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  $("countdown").textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+
+  setActiveCard(nx.key);
+  setAttentionByMinutes(Math.floor(diff/60000));
+  return;
+}
+
+        // ✅ (3) الوضع الطبيعي: تنازلي للصلاة الجاية
+// ✅ رجّع اللابل طبيعي
+$("ringLabel").textContent = "الصلاة الجاية";
+
+$("nextShort").textContent = nx.name;
+
+$("nextBadge").querySelector("span").textContent =
+  `${nx.name} — ${to12h(nx.t24)}${nx.isTomorrow ? " (غداً)" : ""}`;
+
+const h = Math.floor(diff/3600000);
+const m = Math.floor((diff%3600000)/60000);
+const s = Math.floor((diff%60000)/1000);
+$("countdown").textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+
+setActiveCard(nx.key);
+setAttentionByMinutes(Math.floor(diff/60000));
       }
 
       tick();
@@ -1410,9 +1551,14 @@ function buildPrintTable(){
   const mi = String(now.getMinutes()).padStart(2,"0");
   meta.textContent = `تم إنشاء الطباعة: ${dd}/${mm}/${yyyy} — ${hh}:${mi}`;
 
-  // لازم يكون عندك مصفوفة data[] مثل كودك القديم
+  // ✅ لازم يكون عندك مصفوفة data[] مثل كودك القديم
   data.forEach((d)=>{
     const tr = document.createElement("tr");
+
+    // ✅ تفعيل الهايلايت حسب الستايل اللي كاتبه بالـCSS
+    if (d.n >= 21) tr.classList.add("last10");
+    if ([21,23,25,27,29].includes(d.n)) tr.classList.add("qadr");
+
     tr.innerHTML = `
       <td class="c-day">${d.n} ${d.dow}</td>
       <td class="c-h">${d.h}</td>
